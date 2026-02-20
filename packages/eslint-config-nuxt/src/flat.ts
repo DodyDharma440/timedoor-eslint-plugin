@@ -1,14 +1,14 @@
 import { Linter } from "eslint";
-import pluginTest from "@timedoor/eslint-plugin-nuxt";
+import pluginTimedoor from "@timedoor/eslint-plugin-nuxt";
 
 const eslintConfig: Linter.Config = {
   files: ["**/*.ts", "**/*.vue"],
   plugins: {
-    "@timedoor/eslint-plugin-nuxt": pluginTest,
+    "@timedoor/nuxt": pluginTimedoor,
   },
-  ...pluginTest.configs.recommended,
+  ...pluginTimedoor.configs.recommended,
   rules: {
-    ...pluginTest.configs.recommended.rules,
+    ...pluginTimedoor.configs.recommended.rules,
   },
 };
 

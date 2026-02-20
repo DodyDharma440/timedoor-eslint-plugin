@@ -9,18 +9,14 @@ type Plugin = Omit<ESLint.Plugin, "configs"> & {
 
 const plugin: Plugin = {
   meta: {
-    name: "@dodidharma/eslint-plugin-test",
+    name: "@timedoor/eslint-plugin-nuxt",
     version: "0.0.1",
   },
   rules,
   configs: {
     recommended: {
       rules: {
-        "@dodidharma/test/my-rule": "error",
-        "@dodidharma/test/no-inline-type": "error",
-        "@dodidharma/test/prefer-interface-object": "warn",
-        "@dodidharma/test/no-fetch-component": "error",
-        "@dodidharma/test/no-href-nuxt-link": "warn",
+        "@timedoor/nuxt/my-rule": "error",
       },
     },
   },
