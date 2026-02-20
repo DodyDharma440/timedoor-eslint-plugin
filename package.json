@@ -1,0 +1,24 @@
+{
+  "name": "timedoor-eslint-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:config": "cd packages/eslint-config-test && npx tsc --build",
+    "build:plugin": "cd packages/eslint-plugin-test && npx tsc --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "eslint": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^9.6.1",
+    "@typescript-eslint/types": "^8.56.0",
+    "typescript": "^5.9.3"
+  }
+}

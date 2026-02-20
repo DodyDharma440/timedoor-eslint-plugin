@@ -1,0 +1,1 @@
+# Timedoor ESLint Config

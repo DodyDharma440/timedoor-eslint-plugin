@@ -1,0 +1,31 @@
+{
+  "name": "@timedoor/eslint-config-nuxt",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./flat": "./dist/flat.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Timedoor/eslint-plugin-nuxt.git"
+  },
+  "homepage": "https://timedoor-eslint-plugin-nuxt.vercel.app/",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "npx tsc --build"
+  },
+  "keywords": [],
+  "author": "Dodi Aditya",
+  "license": "MIT",
+  "description": "Example ESLint config with eslint-plugin-nuxt included",
+  "dependencies": {
+    "@timedoor/eslint-plugin-nuxt": "link:../eslint-plugin-nuxt",
+    "@typescript-eslint/parser": "^8.56.0",
+    "vue-eslint-parser": "^10.4.0"
+  }
+}
