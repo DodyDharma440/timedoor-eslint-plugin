@@ -106,6 +106,26 @@ ruleTester.run(
         code: `<template><div>Template Only</div></template>`,
         filename: "/components/ui/UiTemplateOnly.vue",
       },
+
+      // --------------------------------------------------------------------------
+      // Whitelist Nuxt Directories & Files (should NOT trigger errors)
+      // --------------------------------------------------------------------------
+      {
+        code: `<template><div>Hi 15</div></template>`,
+        filename: "/layouts/default.vue",
+      },
+      {
+        code: `<template><div>Hi 16</div></template>`,
+        filename: "/pages/about.vue",
+      },
+      {
+        code: `<template><div>Hi 17</div></template>`,
+        filename: "app.vue",
+      },
+      {
+        code: `<template><div>Hi 18</div></template>`,
+        filename: "error.vue",
+      },
     ],
 
     // ============================================================================
@@ -250,6 +270,21 @@ ruleTester.run(
             data: { allowedDirs: "modern, new" },
           },
         ],
+      },
+
+      // --------------------------------------------------------------------------
+      // Missing components/ Directory
+      // Rule: All components must be inside a "components" directory
+      // --------------------------------------------------------------------------
+      {
+        code: `<template><div>Hi 14</div></template>`,
+        filename: "hello.vue",
+        errors: [{ messageId: "issue:must-components-dir" }],
+      },
+      {
+        code: `<template><div>Hi 15</div></template>`,
+        filename: "/section/about.vue",
+        errors: [{ messageId: "issue:must-components-dir" }],
       },
     ],
   },

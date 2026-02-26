@@ -2,6 +2,9 @@ import { getRelativePath } from "../utils/filename";
 import { capitalize } from "../utils/formattter";
 import { createRule, withTemplateVisitor } from "../utils/rule";
 
+const whitelistNuxtDirs = ["layouts", "pages"];
+const whitelistNuxtFiles = ["app.vue", "error.vue"];
+
 const validateFilename = (
   fileName: string,
   affix: string,
@@ -102,6 +105,7 @@ export const enforceComponentDirectoryStructure = createRule({
       "issue:layout-parent-dir": `File must have at least 1 parent directory inside "components/layout" directory.`,
       "issue:invalid-dir":
         "Component must be placed in a valid directory. Allowed directories are: {{allowedDirs}}.",
+      "issue:must-components-dir": `Component must be placed inside the "components" directory.`,
     },
     schema: {
       type: "array",
@@ -128,7 +132,12 @@ export const enforceComponentDirectoryStructure = createRule({
   create: (context) => {
     const relativePath = getRelativePath(context);
 
-    if (!relativePath.endsWith(".vue")) {
+    const isNuxtDir = whitelistNuxtDirs.some((dir) =>
+      relativePath.startsWith(`${dir}/`),
+    );
+    const isNuxtFile = whitelistNuxtFiles.some((file) => relativePath === file);
+
+    if (!relativePath.endsWith(".vue") || isNuxtDir || isNuxtFile) {
       return {};
     }
 
@@ -141,6 +150,15 @@ export const enforceComponentDirectoryStructure = createRule({
       script: {
         Program: (node) => {
           const componentsDir = `/${relativePath}`.split("/components");
+
+          if (componentsDir.length <= 1) {
+            context.report({
+              node,
+              messageId: "issue:must-components-dir",
+            });
+            return;
+          }
+
           const subPath = componentsDir[componentsDir.length - 1];
 
           const messageIdUi = validateDirectory({
