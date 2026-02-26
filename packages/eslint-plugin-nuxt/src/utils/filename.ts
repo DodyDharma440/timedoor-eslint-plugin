@@ -14,3 +14,7 @@ export const getRelativePath = <
   const relativeFilePath = path.relative(cwd, fullFilePath);
   return relativeFilePath;
 };
+
+export const isVueFile = (filePath: string) => {
+  return filePath.endsWith(".vue");
+};

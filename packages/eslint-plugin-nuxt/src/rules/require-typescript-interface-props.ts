@@ -1,3 +1,4 @@
+import { isVueFile } from "../utils/filename";
 import { createRule, withTemplateVisitor } from "../utils/rule";
 import { AST_NODE_TYPES } from "@typescript-eslint/types";
 
@@ -19,6 +20,8 @@ export const requireTypescriptInterfaceProps = createRule({
     hasSuggestions: false,
   },
   create: (context) => {
+    if (!isVueFile(context.filename)) return {};
+
     return withTemplateVisitor(context, {
       script: {
         CallExpression(node) {

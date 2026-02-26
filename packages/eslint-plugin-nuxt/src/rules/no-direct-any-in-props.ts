@@ -1,5 +1,6 @@
 import { AST_NODE_TYPES } from "@typescript-eslint/utils";
 import { createRule, withTemplateVisitor } from "../utils/rule";
+import { isVueFile } from "../utils/filename";
 
 export const noDirectAnyInProps = createRule({
   name: "no-direct-any-in-props",
@@ -17,13 +18,11 @@ export const noDirectAnyInProps = createRule({
     hasSuggestions: false,
   },
   create: (context) => {
+    if (!isVueFile(context.filename)) return {};
+
     return withTemplateVisitor(context, {
       script: {
         CallExpression(node) {
-          console.log(
-            "parser service => ",
-            context.sourceCode.parserServices?.program,
-          );
           if (
             node.callee.type === AST_NODE_TYPES.Identifier &&
             node.callee.name === "defineProps"
