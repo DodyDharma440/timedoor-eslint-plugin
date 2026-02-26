@@ -3,12 +3,7 @@ interface Props {
   message: string;
 }
 
-defineProps({
-  message: {
-    type: String,
-    required: true,
-  },
-});
+defineProps<Props>();
 </script>
 
 <template>
