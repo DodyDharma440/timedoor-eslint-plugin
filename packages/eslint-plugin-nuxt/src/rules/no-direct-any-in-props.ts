@@ -1,6 +1,7 @@
 import { AST_NODE_TYPES } from "@typescript-eslint/utils";
 import { createRule, withTemplateVisitor } from "../utils/rule";
 import { isVueFile } from "../utils/filename";
+import { checkCallExpressionName } from "../utils/ast-checker";
 
 export const noDirectAnyInProps = createRule({
   name: "no-direct-any-in-props",
@@ -23,10 +24,7 @@ export const noDirectAnyInProps = createRule({
     return withTemplateVisitor(context, {
       script: {
         CallExpression(node) {
-          if (
-            node.callee.type === AST_NODE_TYPES.Identifier &&
-            node.callee.name === "defineProps"
-          ) {
+          if (checkCallExpressionName(node, "defineProps")) {
             const hasTypeParameter = !!(
               node.typeArguments && node.typeArguments.params.length > 0
             );

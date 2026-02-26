@@ -1,6 +1,6 @@
+import { checkCallExpressionName } from "../utils/ast-checker";
 import { isVueFile } from "../utils/filename";
 import { createRule, withTemplateVisitor } from "../utils/rule";
-import { AST_NODE_TYPES } from "@typescript-eslint/types";
 
 export const requireTypescriptInterfaceProps = createRule({
   name: "require-typescript-interface-props",
@@ -25,10 +25,7 @@ export const requireTypescriptInterfaceProps = createRule({
     return withTemplateVisitor(context, {
       script: {
         CallExpression(node) {
-          if (
-            node.callee.type === AST_NODE_TYPES.Identifier &&
-            node.callee.name === "defineProps"
-          ) {
+          if (checkCallExpressionName(node, "defineProps")) {
             const hasTypeParameter = !!(
               node.typeArguments && node.typeArguments.params.length > 0
             );
