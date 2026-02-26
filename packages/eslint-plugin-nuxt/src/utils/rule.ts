@@ -6,7 +6,11 @@ interface RuleListeners {
   script?: ESLintUtils.RuleListener;
 }
 
-export const withTemplateVisitor = <C extends RuleContext<any, []>>(
+export const withTemplateVisitor = <
+  M extends string,
+  O extends readonly unknown[],
+  C extends RuleContext<M, O>,
+>(
   context: C,
   { template, script }: RuleListeners,
 ) => {
