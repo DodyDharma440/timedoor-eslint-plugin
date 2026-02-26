@@ -17,7 +17,10 @@ const plugin: Plugin = {
     recommended: {
       rules: {
         "@timedoor/nuxt/my-rule": "error",
-        "@timedoor/nuxt/enforce-component-directory-structure": "error",
+        "@timedoor/nuxt/enforce-component-directory-structure": [
+          "error",
+          { allowedDirs: ["teacher-section", "dialogs"] },
+        ],
       },
     },
   },

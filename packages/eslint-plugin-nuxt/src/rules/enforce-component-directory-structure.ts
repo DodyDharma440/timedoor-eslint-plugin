@@ -23,7 +23,6 @@ type ValidateOptions = {
   affix: string;
   type: "prefix" | "suffix";
   prefixDirectory: PrefixDirectory;
-  checkOutside: boolean;
 };
 
 type MessageIds = keyof typeof enforceComponentDirectoryStructure.meta.messages;
@@ -78,6 +77,16 @@ const validateDirectory = ({
   return null;
 };
 
+const getAllowedDirs = (dirs: string[], overrideDefaults: boolean) => {
+  const defaultDirs = ["ui", "layout", "section"];
+
+  if (overrideDefaults) {
+    return dirs;
+  }
+
+  return [...defaultDirs, ...dirs];
+};
+
 export const enforceComponentDirectoryStructure = createRule({
   name: "enforce-component-directory-structure",
   meta: {
@@ -90,17 +99,43 @@ export const enforceComponentDirectoryStructure = createRule({
       "issue:component-ui-dir": `Filename must be start with "Ui" when the component is placed in a "components/ui" directory.`,
       "issue:component-dir-ui": `Filename must be placed in a "components/ui" directory when the filename starts with "Ui".`,
       "issue:component-layout-dir": `Filename must be start with "{{parentName}}" when the component is placed in a "components/layout/{{parentDir}}" directory.`,
+      "issue:layout-parent-dir": `File must have at least 1 parent directory inside "components/layout" directory.`,
+      "issue:invalid-dir":
+        "Component must be placed in a valid directory. Allowed directories are: {{allowedDirs}}.",
     },
-    schema: [],
+    schema: {
+      type: "array",
+      minItems: 0,
+      items: [
+        {
+          type: "object",
+          properties: {
+            allowedDirs: { type: "array", items: { type: "string" } },
+            overrideDefaults: { type: "boolean" },
+          },
+          additionalProperties: false,
+        },
+      ],
+    },
+    defaultOptions: [
+      {
+        allowedDirs: [] as string[],
+        overrideDefaults: false,
+      },
+    ],
     hasSuggestions: false,
   },
-  defaultOptions: [],
   create: (context) => {
     const relativePath = getRelativePath(context);
 
     if (!relativePath.endsWith(".vue")) {
       return {};
     }
+
+    const allowedDirs = getAllowedDirs(
+      context.options[0]?.allowedDirs || [],
+      context.options[0]?.overrideDefaults || false,
+    );
 
     return withTemplateVisitor(context, {
       script: {
@@ -113,7 +148,6 @@ export const enforceComponentDirectoryStructure = createRule({
             affix: "Ui",
             type: "prefix",
             prefixDirectory: "ui",
-            checkOutside: true,
           });
 
           if (messageIdUi) {
@@ -128,12 +162,21 @@ export const enforceComponentDirectoryStructure = createRule({
           const [_, subCompDir, ...files] = subPath.split("/");
           if (subCompDir === "layout") {
             const parentDir = files[files.length - 2];
+
+            if (!parentDir) {
+              context.report({
+                node,
+                messageId: "issue:layout-parent-dir",
+              });
+
+              return;
+            }
+
             const messageIdLayout = validateDirectory({
               subPath,
               affix: capitalize(parentDir, "-"),
               type: "prefix",
               prefixDirectory: "layout",
-              checkOutside: false,
             });
 
             if (messageIdLayout) {
@@ -148,6 +191,21 @@ export const enforceComponentDirectoryStructure = createRule({
 
               return;
             }
+          }
+
+          const isInAllowedDir = allowedDirs.some((dir) =>
+            subPath.startsWith(`/${dir}/`),
+          );
+
+          if (!isInAllowedDir) {
+            context.report({
+              node,
+              messageId: "issue:invalid-dir",
+              data: {
+                allowedDirs: allowedDirs.join(", "),
+              },
+            });
+            return;
           }
         },
       },
