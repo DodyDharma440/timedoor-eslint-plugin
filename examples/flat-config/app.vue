@@ -1,5 +1,14 @@
-<script>
-var a = 1;
+<script setup lang="ts">
+interface Props {
+  message: string;
+}
+
+defineProps({
+  message: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <template>
