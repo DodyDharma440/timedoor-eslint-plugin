@@ -1,7 +1,7 @@
 import { AST_NODE_TYPES } from "@typescript-eslint/utils";
 import { createRule, withTemplateVisitor } from "../utils/rule";
 import { isVueFile } from "../utils/filename";
-import { checkCallExpressionName } from "../utils/ast-checker";
+import { checkCallExpressionName } from "../utils/ast";
 
 export const noDirectAnyInProps = createRule({
   name: "no-direct-any-in-props",
