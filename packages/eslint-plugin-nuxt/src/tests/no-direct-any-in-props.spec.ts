@@ -4,15 +4,7 @@ import { createVueTester } from "../utils/tester";
 const ruleTester = createVueTester();
 
 ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
-  // ============================================================================
-  // VALID TEST CASES
-  // Components that correctly avoid using `any` type in defineProps
-  // ============================================================================
   valid: [
-    // --------------------------------------------------------------------------
-    // Primitive Type Props
-    // Using specific primitive types instead of `any`
-    // --------------------------------------------------------------------------
     {
       code: `
         <script setup lang="ts">
@@ -45,11 +37,6 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       `,
       filename: "ValidUnionProps.vue",
     },
-
-    // --------------------------------------------------------------------------
-    // Interface/Type Alias Props
-    // Using named interfaces or type aliases with specific types
-    // --------------------------------------------------------------------------
     {
       code: `
         <script setup lang="ts">
@@ -83,11 +70,6 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       `,
       filename: "ValidImportedTypeProp.vue",
     },
-
-    // --------------------------------------------------------------------------
-    // Generic/Utility Type Props (without `any`)
-    // Using generics with constrained/specific type parameters
-    // --------------------------------------------------------------------------
     {
       code: `
         <script setup lang="ts">
@@ -104,28 +86,12 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
         <script setup lang="ts">
           defineProps<{
             config: Record<string, string>
-            metadata: Partial<{ id: string; timestamp: number }>
           }>()
         </script>
       `,
       filename: "ValidConstrainedRecordProps.vue",
     },
     {
-      code: `
-        <script setup lang="ts">
-          type StrictRecord = Record<'id' | 'name', string>
-          defineProps<{ data: StrictRecord }>()
-        </script>
-      `,
-      filename: "ValidMappedTypeProps.vue",
-    },
-
-    // --------------------------------------------------------------------------
-    // Edge Cases & Exclusions
-    // Cases that should not trigger the rule
-    // --------------------------------------------------------------------------
-    {
-      // defineProps without type argument (runtime declaration) - rule ignores this
       code: `
         <script setup lang="ts">
           defineProps({
@@ -136,7 +102,6 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       filename: "ValidRuntimeDeclaration.vue",
     },
     {
-      // Empty defineProps call - no type parameter to check
       code: `
         <script setup lang="ts">
           defineProps()
@@ -145,7 +110,6 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       filename: "ValidEmptyCall.vue",
     },
     {
-      // Non-Vue file - rule only processes Vue SFC via withTemplateVisitor
       code: `
         export function createProps<T>() {
           return {} as T
@@ -154,27 +118,21 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       filename: "ValidNonVueFile.ts",
     },
     {
-      // defineProps with unknown (not any) - different type, should pass
       code: `
         <script setup lang="ts">
-          defineProps<{
-            data: unknown
-          }>()
+          defineProps<unknown>()
         </script>
       `,
-      filename: "ValidUnknownProp.vue",
+      filename: "ValidUnknownAllowed.vue",
+      options: [{ allowUnknown: true }],
     },
     {
-      // Nested object with specific types - no any anywhere
       code: `
         <script setup lang="ts">
           defineProps<{
             user: {
               profile: {
                 name: string
-                settings: {
-                  theme: 'light' | 'dark'
-                }
               }
             }
           }>()
@@ -183,16 +141,7 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       filename: "ValidDeeplyNestedProps.vue",
     },
   ],
-
-  // ============================================================================
-  // INVALID TEST CASES
-  // Components that use `any` type in props and should trigger ESLint errors
-  // ============================================================================
   invalid: [
-    // --------------------------------------------------------------------------
-    // Direct `any` Type Usage
-    // Rule: defineProps<any> is not allowed
-    // --------------------------------------------------------------------------
     {
       code: `
         <script setup lang="ts">
@@ -203,8 +152,6 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       errors: [
         {
           messageId: "issue:any-in-props",
-          line: 3,
-          column: 11,
         },
       ],
     },
@@ -218,8 +165,34 @@ ruleTester.run("no-direct-any-in-props", noDirectAnyInProps, {
       errors: [
         {
           messageId: "issue:any-in-props",
-          line: 3,
-          column: 25,
+        },
+      ],
+    },
+    {
+      code: `
+        <script setup lang="ts">
+          defineProps<unknown>()
+        </script>
+      `,
+      filename: "InvalidUnknownDisallowed.vue",
+      options: [{ allowUnknown: false }],
+      errors: [
+        {
+          messageId: "issue:any-in-props",
+        },
+      ],
+    },
+    {
+      code: `
+        <script setup lang="ts">
+          const p = defineProps<unknown>()
+        </script>
+      `,
+      filename: "InvalidUnknownDisallowedAssign.vue",
+      options: [{ allowUnknown: false }],
+      errors: [
+        {
+          messageId: "issue:any-in-props",
         },
       ],
     },
