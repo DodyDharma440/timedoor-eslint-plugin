@@ -7,7 +7,7 @@ export const requireTypescriptInterfaceProps = createRule({
   meta: {
     docs: {
       description:
-        "Enforce using TypeScript type arguments for component props.",
+        "Require TypeScript interface for component props definition.",
     },
     type: "suggestion",
     messages: {
