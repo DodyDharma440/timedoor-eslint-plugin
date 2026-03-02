@@ -1,4 +1,4 @@
-import { checkCallExpressionName } from "../utils/ast-checker";
+import { checkCallExpressionName } from "../utils/ast";
 import { isVueFile } from "../utils/filename";
 import { createRule, withTemplateVisitor } from "../utils/rule";
 

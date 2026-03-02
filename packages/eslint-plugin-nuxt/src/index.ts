@@ -21,6 +21,7 @@ const plugin: Plugin = {
         "@timedoor/nuxt/require-typescript-interface-props": "error",
         "@timedoor/nuxt/no-direct-any-in-props": "error",
         "@timedoor/nuxt/no-inline-props-definition": "error",
+        "@timedoor/nuxt/props-interface-name": "error",
       },
     },
   },
