@@ -7,7 +7,8 @@ export const noInlinePropsDefinition = createRule({
   name: "no-inline-props-definition",
   meta: {
     docs: {
-      description: "Disallow inline props definition in Vue components",
+      description:
+        "Disallow inline props definition if property count exceeds limit.",
     },
     type: "suggestion",
     messages: {

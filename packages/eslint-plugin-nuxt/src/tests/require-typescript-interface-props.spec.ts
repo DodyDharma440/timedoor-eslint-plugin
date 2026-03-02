@@ -7,15 +7,7 @@ ruleTester.run(
   "require-typescript-interface-props",
   requireTypescriptInterfaceProps,
   {
-    // ============================================================================
-    // VALID TEST CASES
-    // Components that correctly use TypeScript type arguments for defineProps
-    // ============================================================================
     valid: [
-      // --------------------------------------------------------------------------
-      // Interface-Based Props Declaration
-      // Using named TypeScript interface as type parameter for defineProps
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
@@ -40,7 +32,6 @@ ruleTester.run(
         filename: "ValidExportedInterface.vue",
       },
       {
-        // Nested interface definition is also valid
         code: `
             <script setup lang="ts">
               namespace Types {
@@ -53,10 +44,6 @@ ruleTester.run(
           `,
         filename: "ValidNamespacedInterface.vue",
       },
-      // --------------------------------------------------------------------------
-      // Type Alias-Based Props Declaration
-      // Using TypeScript type alias (not interface) is also acceptable
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
@@ -81,10 +68,6 @@ ruleTester.run(
           `,
         filename: "ValidUnionTypeAlias.vue",
       },
-      // --------------------------------------------------------------------------
-      // Inline Type Literal Declaration
-      // Direct inline type argument without named interface/type is valid
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
@@ -104,10 +87,6 @@ ruleTester.run(
           `,
         filename: "ValidInlineSingleProp.vue",
       },
-      // --------------------------------------------------------------------------
-      // Generic/Utility Type Usage
-      // Using utility types or generic references as props type
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
@@ -138,24 +117,17 @@ ruleTester.run(
           `,
         filename: "ValidUtilityType.vue",
       },
-      // --------------------------------------------------------------------------
-      // Edge Cases & Exclusions
-      // Cases that should not trigger the rule
-      // --------------------------------------------------------------------------
       {
-        // Non-Vue files are ignored by this rule
         code: `
             const props = defineProps<{ msg: string }>()
           `,
         filename: "ValidNonVueFile.ts",
       },
       {
-        // Template-only components (no script) are ignored
         code: `<template><div>Static Content</div></template>`,
         filename: "ValidTemplateOnly.vue",
       },
       {
-        // defineProps called in non-setup context (should not match)
         code: `
             <script setup lang="ts">
               function createProps() {
@@ -166,7 +138,6 @@ ruleTester.run(
         filename: "ValidNestedCall.vue",
       },
       {
-        // Different function name (not defineProps) should be ignored
         code: `
             <script setup lang="ts">
               const props = customDefineProps({ msg: String })
@@ -175,16 +146,7 @@ ruleTester.run(
         filename: "ValidDifferentFunction.vue",
       },
     ],
-
-    // ============================================================================
-    // INVALID TEST CASES
-    // Components that misuse defineProps and should trigger ESLint errors
-    // ============================================================================
     invalid: [
-      // --------------------------------------------------------------------------
-      // Runtime Declaration (Object Syntax) Violations
-      // Rule: defineProps must use type argument, not runtime object declaration
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
@@ -219,7 +181,6 @@ ruleTester.run(
         ],
       },
       {
-        // Mixed runtime types with TypeScript still invalid
         code: `
             <script setup lang="ts">
               defineProps({
@@ -234,11 +195,6 @@ ruleTester.run(
           },
         ],
       },
-
-      // --------------------------------------------------------------------------
-      // Empty/Missing Type Argument Violations
-      // Rule: defineProps() must have a type parameter, cannot be empty
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
@@ -265,11 +221,6 @@ ruleTester.run(
           },
         ],
       },
-
-      // --------------------------------------------------------------------------
-      // Hybrid Declaration Violations
-      // Rule: Do not mix type arguments with runtime arguments
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
@@ -306,12 +257,6 @@ ruleTester.run(
           },
         ],
       },
-
-      // --------------------------------------------------------------------------
-      // JavaScript Context Violations
-      // Rule: This rule enforces TypeScript usage; JS files should not use defineProps without types
-      // Note: In practice, you might want to skip JS files via rule configuration
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup>
@@ -327,11 +272,6 @@ ruleTester.run(
           },
         ],
       },
-
-      // --------------------------------------------------------------------------
-      // Multiple defineProps Calls (Edge Case)
-      // Rule should validate each call independently
-      // --------------------------------------------------------------------------
       {
         code: `
             <script setup lang="ts">
