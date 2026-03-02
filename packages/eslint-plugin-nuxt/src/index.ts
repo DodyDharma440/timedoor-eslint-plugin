@@ -17,10 +17,11 @@ const plugin: Plugin = {
     recommended: {
       rules: {
         "@timedoor/nuxt/my-rule": "error",
-        "@timedoor/nuxt/enforce-component-directory-structure": [
-          "error",
-          { allowedDirs: ["teacher-section", "dialogs"] },
-        ],
+        "@timedoor/nuxt/enforce-component-directory-structure": "error",
+        "@timedoor/nuxt/require-typescript-interface-props": "error",
+        "@timedoor/nuxt/no-direct-any-in-props": "error",
+        "@timedoor/nuxt/no-inline-props-definition": "error",
+        "@timedoor/nuxt/props-interface-name": "error",
       },
     },
   },

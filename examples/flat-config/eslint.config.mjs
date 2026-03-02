@@ -11,6 +11,10 @@ export default withNuxt([
         "error",
         { allowedDirs: ["dialogs"] },
       ],
+      "@timedoor/nuxt/no-inline-props-definition": [
+        "warn",
+        { propertiesLimit: 0 },
+      ],
     },
   },
 ]);

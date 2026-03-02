@@ -14,3 +14,12 @@ export const getRelativePath = <
   const relativeFilePath = path.relative(cwd, fullFilePath);
   return relativeFilePath;
 };
+
+export const isVueFile = (filePath: string) => {
+  return filePath.endsWith(".vue");
+};
+
+export const getFileName = (filePath: string) => {
+  const splittedPath = filePath.split("/");
+  return splittedPath[splittedPath.length - 1];
+};
