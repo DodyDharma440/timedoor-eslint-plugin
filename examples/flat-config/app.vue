@@ -1,9 +1,14 @@
 <script setup lang="ts">
-interface Props {
+interface AppProps {
   message: string;
 }
 
-defineProps<Props>();
+interface AppEmits {
+  submit: (value: string) => void;
+}
+
+defineProps<AppProps>();
+defineEmits<AppEmits>();
 </script>
 
 <template>
