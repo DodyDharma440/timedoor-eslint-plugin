@@ -1,4 +1,5 @@
 {
+  "root": true,
   "extends": "@timedoor/nuxt",
   "parser": "vue-eslint-parser",
   "plugins": ["vue"],
@@ -7,5 +8,15 @@
     "ecmaFeatures": {
       "jsx": false
     }
+  },
+  "rules": {
+    "@timedoor/nuxt/enforce-component-directory-structure": [
+      "error",
+      { "allowedDirs": ["dialogs"] }
+    ],
+    "@timedoor/nuxt/no-inline-props-definition": [
+      "warn",
+      { "propertiesLimit": 0 }
+    ]
   }
 }
