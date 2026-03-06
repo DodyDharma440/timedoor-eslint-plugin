@@ -12,7 +12,7 @@ export const noComposableInClass = createRule({
     docs: {
       description: "",
     },
-    type: "suggestion",
+    type: "problem",
     messages: {
       "issue:composable-call":
         "Nuxt composable '{{name}}' cannot be used inside a class method.",
