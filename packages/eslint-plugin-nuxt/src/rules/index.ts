@@ -9,6 +9,7 @@ import { requireTypedEmitsSignature } from "./require-typed-emits-signature";
 import { emitsInterfaceName } from "./emits-interface-name";
 import { noDirectAnyInEmits } from "./no-direct-any-in-emits";
 import { noInlineEmitsDefinition } from "./no-inline-emits-definition";
+import { noComposableInClass } from "./no-composable-in-class";
 
 export const rules = {
   "my-rule": myRule,
@@ -21,4 +22,5 @@ export const rules = {
   "no-direct-any-in-emits": noDirectAnyInEmits,
   "no-inline-emits-definition": noInlineEmitsDefinition,
   "emits-interface-name": emitsInterfaceName,
+  "no-composable-in-class": noComposableInClass,
 } as unknown as ESLint.Plugin["rules"];

@@ -26,6 +26,7 @@ const plugin: Plugin = {
         "@timedoor/nuxt/no-direct-any-in-emits": "error",
         "@timedoor/nuxt/no-inline-emits-definition": "error",
         "@timedoor/nuxt/emits-interface-name": "error",
+        "@timedoor/nuxt/no-composable-in-class": "error",
       },
     },
   },
