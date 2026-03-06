@@ -1,5 +1,14 @@
 <script setup lang="ts">
-var a = 1;
+interface AppProps {
+  message: string;
+}
+
+interface AppEmits {
+  submit: (value: string) => void;
+}
+
+defineProps<AppProps>();
+defineEmits<AppEmits>();
 </script>
 
 <template>
