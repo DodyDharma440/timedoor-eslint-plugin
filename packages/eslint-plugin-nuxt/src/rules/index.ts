@@ -10,6 +10,8 @@ import { emitsInterfaceName } from "./emits-interface-name";
 import { noDirectAnyInEmits } from "./no-direct-any-in-emits";
 import { noInlineEmitsDefinition } from "./no-inline-emits-definition";
 import { noComposableInClass } from "./no-composable-in-class";
+import { asyncDataTopLevel } from "./async-data-top-level";
+import { noAsyncDataOutsideSetup } from "./no-async-data-outside-setup";
 
 export const rules = {
   "my-rule": myRule,
@@ -23,4 +25,6 @@ export const rules = {
   "no-inline-emits-definition": noInlineEmitsDefinition,
   "emits-interface-name": emitsInterfaceName,
   "no-composable-in-class": noComposableInClass,
+  "async-data-top-level": asyncDataTopLevel,
+  "no-async-data-outside-setup": noAsyncDataOutsideSetup,
 } as unknown as ESLint.Plugin["rules"];

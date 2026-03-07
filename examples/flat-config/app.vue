@@ -9,6 +9,10 @@ interface AppEmits {
 
 defineProps<AppProps>();
 defineEmits<AppEmits>();
+
+if (import.meta.client) {
+  useAsyncData("data", () => $fetch("/api/data"));
+}
 </script>
 
 <template>
