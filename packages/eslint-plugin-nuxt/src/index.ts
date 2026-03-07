@@ -28,6 +28,7 @@ const plugin: Plugin = {
         "@timedoor/nuxt/emits-interface-name": "error",
         "@timedoor/nuxt/no-composable-in-class": "error",
         "@timedoor/nuxt/async-data-top-level": "error",
+        "@timedoor/nuxt/no-async-data-outside-setup": "error",
       },
     },
   },

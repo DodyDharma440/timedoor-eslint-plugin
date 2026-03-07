@@ -24,6 +24,15 @@ interface IStore extends IDetail {
   };
 }
 
+const useSomeComposable = async () => {
+  const { data } = await useAsyncData(() => {
+    return super.call("/api/cms/paylater", {
+      method: "GET",
+      query,
+    });
+  });
+};
+
 class PaylaterModule extends FetchFactory<any> {
   async list(payload: IList) {
     const { query } = payload;
