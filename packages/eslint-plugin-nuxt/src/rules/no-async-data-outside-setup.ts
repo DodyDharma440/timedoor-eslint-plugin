@@ -1,8 +1,7 @@
 import { AST_NODE_TYPES } from "@typescript-eslint/utils";
 import { isVueFile } from "../utils/filename";
 import { createRule, withTemplateVisitor } from "../utils/rule";
-
-const COMPOSABLE_REGEX = /^use[A-Z][a-zA-Z0-9]*$/;
+import { isInsideComposable } from "../utils/ast";
 
 export const noAsyncDataOutsideSetup = createRule({
   name: "no-async-data-outside-setup",
@@ -40,43 +39,7 @@ export const noAsyncDataOutsideSetup = createRule({
 
           const ancestors = context.sourceCode.getAncestors(node);
 
-          const insideComposable = ancestors.some((ancestor, index) => {
-            if (
-              ancestor.type === AST_NODE_TYPES.FunctionDeclaration &&
-              ancestor.id &&
-              COMPOSABLE_REGEX.test(ancestor.id.name)
-            ) {
-              return true;
-            }
-
-            if (
-              ancestor.type === AST_NODE_TYPES.FunctionExpression ||
-              ancestor.type === AST_NODE_TYPES.ArrowFunctionExpression
-            ) {
-              if (
-                ancestor.type === AST_NODE_TYPES.FunctionExpression &&
-                ancestor.id &&
-                COMPOSABLE_REGEX.test(ancestor.id.name)
-              ) {
-                return true;
-              }
-
-              if (index > 0) {
-                const parent = ancestors[index - 1];
-                if (
-                  parent.type === AST_NODE_TYPES.VariableDeclarator &&
-                  parent.id.type === AST_NODE_TYPES.Identifier &&
-                  COMPOSABLE_REGEX.test(parent.id.name)
-                ) {
-                  return true;
-                }
-              }
-            }
-
-            return false;
-          });
-
-          if (!insideComposable) {
+          if (!isInsideComposable(ancestors)) {
             context.report({
               node,
               messageId: "issue:invalid-call",

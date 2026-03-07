@@ -70,6 +70,76 @@ ruleTester.run("async-data-top-level", asyncDataTopLevel, {
       `,
       filename: "ValidOtherComposableInFunction.vue",
     },
+    // useAsyncData inside a named composable function inside <script setup>
+    {
+      code: `
+        <script setup lang="ts">
+          function usePosts() {
+            return useAsyncData('posts', () => $fetch('/api/posts'))
+          }
+          const { data } = await usePosts()
+        </script>
+      `,
+      filename: "ValidUseAsyncDataInComposable.vue",
+    },
+    // useFetch inside a composable arrow assigned inside <script setup>
+    {
+      code: `
+        <script setup lang="ts">
+          const useUser = () => {
+            return useFetch('/api/user')
+          }
+          const { data } = await useUser()
+        </script>
+      `,
+      filename: "ValidUseFetchInComposableArrow.vue",
+    },
+    // useAsyncData inside a composable with dynamic key and watch option
+    {
+      code: `
+        <script setup lang="ts">
+          const id = ref(1)
+          function usePostById() {
+            return useAsyncData(
+              () => \`post-\${id.value}\`,
+              () => $fetch(\`/api/posts/\${id.value}\`),
+              { watch: [id] }
+            )
+          }
+          const { data } = await usePostById()
+        </script>
+      `,
+      filename: "ValidUseAsyncDataWithOptions.vue",
+    },
+    // Both composables used inside a composable function inside <script setup>
+    {
+      code: `
+        <script setup lang="ts">
+          function useDashboard() {
+            const posts = useAsyncData('posts', () => $fetch('/api/posts'))
+            const user = useFetch('/api/user')
+            return { posts, user }
+          }
+          const { posts, user } = useDashboard()
+        </script>
+      `,
+      filename: "ValidBothInComposable.vue",
+    },
+    // useFetch inside a nested function within a composable inside <script setup>
+    {
+      code: `
+        <script setup lang="ts">
+          function usePageData() {
+            async function loadInner() {
+              return useFetch('/api/inner')
+            }
+            return loadInner()
+          }
+          const { data } = await usePageData()
+        </script>
+      `,
+      filename: "ValidNestedInComposable.vue",
+    },
   ],
 
   // ============================================================================
@@ -215,6 +285,77 @@ ruleTester.run("async-data-top-level", asyncDataTopLevel, {
         </script>
       `,
       filename: "InvalidUseFetchInClassMethod.vue",
+      errors: [
+        {
+          messageId: "issue:invalid-call",
+          data: { name: "useFetch" },
+        },
+      ],
+    },
+    // useAsyncData inside a while loop
+    {
+      code: `
+        <script setup lang="ts">
+          while (retries > 0) {
+            const { data } = await useAsyncData('retry', () => $fetch('/api/data'))
+            retries--
+          }
+        </script>
+      `,
+      filename: "InvalidUseAsyncDataInWhileLoop.vue",
+      errors: [
+        {
+          messageId: "issue:invalid-call",
+          data: { name: "useAsyncData" },
+        },
+      ],
+    },
+    // useFetch inside a switch statement
+    {
+      code: `
+        <script setup lang="ts">
+          switch (mode) {
+            case 'user':
+              const { data } = await useFetch('/api/user')
+              break
+          }
+        </script>
+      `,
+      filename: "InvalidUseFetchInSwitch.vue",
+      errors: [
+        {
+          messageId: "issue:invalid-call",
+          data: { name: "useFetch" },
+        },
+      ],
+    },
+    // useAsyncData inside a for-of loop
+    {
+      code: `
+        <script setup lang="ts">
+          for (const key of keys) {
+            const { data } = await useAsyncData(key, () => $fetch(\`/api/\${key}\`))
+          }
+        </script>
+      `,
+      filename: "InvalidUseAsyncDataInForOf.vue",
+      errors: [
+        {
+          messageId: "issue:invalid-call",
+          data: { name: "useAsyncData" },
+        },
+      ],
+    },
+    // useFetch inside a non-composable arrow (not use*) inside <script setup>
+    {
+      code: `
+        <script setup lang="ts">
+          const loadUser = async () => {
+            const { data } = await useFetch('/api/user')
+          }
+        </script>
+      `,
+      filename: "InvalidUseFetchInNonComposableArrow.vue",
       errors: [
         {
           messageId: "issue:invalid-call",

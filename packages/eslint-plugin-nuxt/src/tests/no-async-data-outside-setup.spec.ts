@@ -94,6 +94,74 @@ ruleTester.run("no-async-data-outside-setup", noAsyncDataOutsideSetup, {
       `,
       filename: "useMyDashboard.ts",
     },
+    // Composable passing dynamic key and params to useAsyncData
+    {
+      code: `
+        export function usePostById(id: Ref<number>) {
+          const { data, pending } = useAsyncData(
+            () => \`post-\${id.value}\`,
+            () => $fetch(\`/api/posts/\${id.value}\`),
+            { watch: [id] }
+          )
+          return { data, pending }
+        }
+      `,
+      filename: "usePostById.ts",
+    },
+    // Composable using useAsyncData inside an if block
+    {
+      code: `
+        export function useConditionalData(enabled: boolean) {
+          if (enabled) {
+            const { data } = useAsyncData('conditional', () => $fetch('/api/data'))
+            return { data }
+          }
+          return { data: null }
+        }
+      `,
+      filename: "useConditionalData.ts",
+    },
+    // Composable using useFetch inside a try/catch
+    {
+      code: `
+        export const useSafeProfile = async () => {
+          try {
+            const { data } = await useFetch('/api/profile')
+            return { data }
+          } catch {
+            return { data: null }
+          }
+        }
+      `,
+      filename: "useSafeProfile.ts",
+    },
+    // Two independent composables in the same file, both using async data
+    {
+      code: `
+        export function useArticles() {
+          const { data } = useAsyncData('articles', () => $fetch('/api/articles'))
+          return { data }
+        }
+
+        export const useComments = () => {
+          const { data } = useFetch('/api/comments')
+          return { data }
+        }
+      `,
+      filename: "composables.ts",
+    },
+    // useAsyncData inside a composable that is itself inside another composable
+    {
+      code: `
+        export function usePageData() {
+          const useInnerData = () => {
+            return useAsyncData('inner', () => $fetch('/api/inner'))
+          }
+          return useInnerData()
+        }
+      `,
+      filename: "usePageData.ts",
+    },
   ],
 
   // ============================================================================
@@ -173,6 +241,42 @@ ruleTester.run("no-async-data-outside-setup", noAsyncDataOutsideSetup, {
       errors: [
         { messageId: "issue:invalid-call", data: { name: "useAsyncData" } },
         { messageId: "issue:invalid-call", data: { name: "useFetch" } },
+      ],
+    },
+    // useAsyncData inside an IIFE (not a composable)
+    {
+      code: `
+        ;(async () => {
+          const { data } = await useAsyncData('iife', () => $fetch('/api/data'))
+        })()
+      `,
+      filename: "bootstrap.ts",
+      errors: [
+        { messageId: "issue:invalid-call", data: { name: "useAsyncData" } },
+      ],
+    },
+    // useFetch inside a regular async utility function
+    {
+      code: `
+        async function loadUserData(userId: string) {
+          const { data } = await useFetch(\`/api/users/\${userId}\`)
+          return data.value
+        }
+      `,
+      filename: "userUtils.ts",
+      errors: [{ messageId: "issue:invalid-call", data: { name: "useFetch" } }],
+    },
+    // useAsyncData in a non-composable arrow assigned to uppercase variable
+    {
+      code: `
+        const FetchData = () => {
+          const { data } = useAsyncData('data', () => $fetch('/api/data'))
+          return data
+        }
+      `,
+      filename: "FetchData.ts",
+      errors: [
+        { messageId: "issue:invalid-call", data: { name: "useAsyncData" } },
       ],
     },
   ],
