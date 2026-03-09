@@ -12,6 +12,7 @@ import { noInlineEmitsDefinition } from "./no-inline-emits-definition";
 import { noComposableInClass } from "./no-composable-in-class";
 import { asyncDataTopLevel } from "./async-data-top-level";
 import { noAsyncDataOutsideSetup } from "./no-async-data-outside-setup";
+import { noDirectApiCallInComponent } from "./no-direct-api-call-in-component";
 
 export const rules = {
   "my-rule": myRule,
@@ -27,4 +28,5 @@ export const rules = {
   "no-composable-in-class": noComposableInClass,
   "async-data-top-level": asyncDataTopLevel,
   "no-async-data-outside-setup": noAsyncDataOutsideSetup,
+  "no-direct-api-call-in-component": noDirectApiCallInComponent,
 } as unknown as ESLint.Plugin["rules"];

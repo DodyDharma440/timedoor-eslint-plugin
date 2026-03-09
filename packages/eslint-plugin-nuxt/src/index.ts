@@ -29,6 +29,7 @@ const plugin: Plugin = {
         "@timedoor/nuxt/no-composable-in-class": "error",
         "@timedoor/nuxt/async-data-top-level": "error",
         "@timedoor/nuxt/no-async-data-outside-setup": "error",
+        "@timedoor/nuxt/no-direct-api-call-in-component": "error",
       },
     },
   },
