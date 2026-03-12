@@ -55,15 +55,15 @@ export const noManualRepositoryImport = createRule({
         ImportDeclaration(node) {
           const forbiddenPaths = mergeOptionWithDefaults({
             options:
-              context.options[0].forbiddenPaths ?? DEFAULT_FORBIDDEN_PATHS,
+              context.options[0]?.forbiddenPaths ?? DEFAULT_FORBIDDEN_PATHS,
             defaultOptions: DEFAULT_FORBIDDEN_PATHS,
-            overrideDefaults: context.options[0].overrideDefaults,
+            overrideDefaults: context.options[0]?.overrideDefaults,
           });
           const allowedImportDirs = mergeOptionWithDefaults({
             options:
-              context.options[1].allowedDirsToImport ?? DEFAULT_ALLOWED_DIRS,
+              context.options[1]?.allowedDirsToImport ?? DEFAULT_ALLOWED_DIRS,
             defaultOptions: DEFAULT_ALLOWED_DIRS,
-            overrideDefaults: context.options[1].overrideDefaults,
+            overrideDefaults: context.options[1]?.overrideDefaults,
           });
 
           const importSource = node.source.value;
