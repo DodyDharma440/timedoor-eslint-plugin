@@ -13,7 +13,7 @@ export const noDirectApiCallInComponent = createRule({
     type: "suggestion",
     messages: {
       "issue:direct-call":
-        "Direct API call detected in component. Use a composable instead.",
+        "Direct API call detected in component. Use repository pattern instead.",
     },
     schema: [],
     defaultOptions: [],
