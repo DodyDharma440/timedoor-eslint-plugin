@@ -13,6 +13,7 @@ import { noComposableInClass } from "./no-composable-in-class";
 import { asyncDataTopLevel } from "./async-data-top-level";
 import { noAsyncDataOutsideSetup } from "./no-async-data-outside-setup";
 import { noDirectApiCallInComponent } from "./no-direct-api-call-in-component";
+import { noManualRepositoryImport } from "./no-manual-repository-import";
 
 export const rules = {
   "my-rule": myRule,
@@ -29,4 +30,5 @@ export const rules = {
   "async-data-top-level": asyncDataTopLevel,
   "no-async-data-outside-setup": noAsyncDataOutsideSetup,
   "no-direct-api-call-in-component": noDirectApiCallInComponent,
+  "no-manual-repository-import": noManualRepositoryImport,
 } as unknown as ESLint.Plugin["rules"];

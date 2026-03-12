@@ -15,6 +15,10 @@ export default withNuxt([
         "warn",
         { propertiesLimit: 0 },
       ],
+      "@timedoor/nuxt/no-manual-repository-import": [
+        "warn",
+        { forbiddenPaths: ["utils"], overrideDefaults: false },
+      ],
     },
   },
 ]);
