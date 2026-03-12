@@ -28,3 +28,19 @@ export const createRule = ESLintUtils.RuleCreator(
   (name) =>
     `https://timedoor-eslint-plugin-nuxt.vercel.app/docs/eslint-rules/${name}`,
 );
+
+type MergeOption = {
+  options: string[];
+  defaultOptions: string[];
+  overrideDefaults: boolean;
+};
+
+export const mergeOptionWithDefaults = ({
+  options,
+  defaultOptions,
+  overrideDefaults,
+}: MergeOption) => {
+  const merged = overrideDefaults ? options : [...defaultOptions, ...options];
+
+  return merged;
+};
