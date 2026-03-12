@@ -97,7 +97,7 @@ export const enforceComponentDirectoryStructure = createRule({
       description:
         "Validate that components convention name are placed in the correct directory structure",
     },
-    type: "suggestion",
+    type: "layout",
     messages: {
       "issue:component-ui-dir": `Filename must be start with "Ui" when the component is placed in a "components/ui" directory.`,
       "issue:component-dir-ui": `Filename must be placed in a "components/ui" directory when the filename starts with "Ui".`,

@@ -16,7 +16,6 @@ const plugin: Plugin = {
   configs: {
     recommended: {
       rules: {
-        "@timedoor/nuxt/my-rule": "error",
         "@timedoor/nuxt/enforce-component-directory-structure": "error",
         "@timedoor/nuxt/require-typescript-interface-props": "error",
         "@timedoor/nuxt/no-direct-any-in-props": "error",
