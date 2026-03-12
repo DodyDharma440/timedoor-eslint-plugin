@@ -10,7 +10,8 @@ export const noComposableInClass = createRule({
   name: "no-composable-in-class",
   meta: {
     docs: {
-      description: "",
+      description:
+        "Disallow Nuxt composables inside standard class declarations.",
     },
     type: "problem",
     messages: {
