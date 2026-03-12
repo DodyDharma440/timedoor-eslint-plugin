@@ -79,7 +79,6 @@ export const noManualRepositoryImport = createRule({
           const forbiddenRegex = new RegExp(
             `(^|\/)(${forbiddenPaths.join("|")})(\/|$)`,
           );
-          console.log("🚀 ~ forbiddenRegex:", forbiddenRegex);
 
           if (forbiddenRegex.test(importSource)) {
             context.report({
