@@ -30,6 +30,7 @@ const plugin: Plugin = {
         "@timedoor/nuxt/no-async-data-outside-setup": "error",
         "@timedoor/nuxt/no-direct-api-call-in-component": "error",
         "@timedoor/nuxt/no-manual-repository-import": "error",
+        "@timedoor/nuxt/require-typed-repository": "error",
       },
     },
   },

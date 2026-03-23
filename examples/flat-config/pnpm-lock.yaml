@@ -24,9 +24,6 @@ importers:
       '@timedoor/eslint-config-nuxt':
         specifier: link:../../packages/eslint-config-nuxt
         version: link:../../packages/eslint-config-nuxt
-      '@timedoor/eslint-plugin-nuxt':
-        specifier: link:../../packages/eslint-plugin-nuxt
-        version: link:../../packages/eslint-plugin-nuxt
 
 packages:
 
