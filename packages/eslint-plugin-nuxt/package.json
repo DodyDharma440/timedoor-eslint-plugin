@@ -26,7 +26,8 @@
   "dependencies": {
     "@typescript-eslint/project-service": "^8.56.0",
     "@typescript-eslint/tsconfig-utils": "^8.56.0",
-    "@typescript-eslint/utils": "^8.56.0"
+    "@typescript-eslint/utils": "^8.56.0",
+    "minimatch": "^10.2.4"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": ">=7.13.0",

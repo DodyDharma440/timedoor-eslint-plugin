@@ -13,6 +13,7 @@ import { asyncDataTopLevel } from "./async-data-top-level";
 import { noAsyncDataOutsideSetup } from "./no-async-data-outside-setup";
 import { noDirectApiCallInComponent } from "./no-direct-api-call-in-component";
 import { noManualRepositoryImport } from "./no-manual-repository-import";
+import { requireTypedRepository } from "./require-typed-repository";
 
 export const rules = {
   "enforce-component-directory-structure": enforceComponentDirectoryStructure,
@@ -29,4 +30,5 @@ export const rules = {
   "no-async-data-outside-setup": noAsyncDataOutsideSetup,
   "no-direct-api-call-in-component": noDirectApiCallInComponent,
   "no-manual-repository-import": noManualRepositoryImport,
+  "require-typed-repository": requireTypedRepository,
 } as unknown as ESLint.Plugin["rules"];

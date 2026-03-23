@@ -34,18 +34,16 @@ const useSomeComposable = async () => {
 };
 
 class PaylaterModule extends FetchFactory<any> {
-  async list(payload: IList) {
+  async list(payload) {
     const { query } = payload;
 
-    return await useAsyncData(() => {
-      return super.call("/api/cms/paylater", {
-        method: "GET",
-        query,
-      });
+    return super.call("/api/cms/paylater", {
+      method: "GET",
+      query,
     });
   }
 
-  detail = async (payload: IDetail) => {
+  detail = async (payload: IDetail): Promise<ApiResponse<any>> => {
     const { params } = payload;
     const cookie = useCookie("token");
     const { $api } = useNuxtApp();
