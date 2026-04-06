@@ -14,6 +14,7 @@ import { noAsyncDataOutsideSetup } from "./no-async-data-outside-setup";
 import { noDirectApiCallInComponent } from "./no-direct-api-call-in-component";
 import { noManualRepositoryImport } from "./no-manual-repository-import";
 import { requireTypedRepository } from "./require-typed-repository";
+import { requirePiniaCompositionApi } from "./require-pinia-composition-api";
 
 export const rules = {
   "enforce-component-directory-structure": enforceComponentDirectoryStructure,
@@ -31,4 +32,5 @@ export const rules = {
   "no-direct-api-call-in-component": noDirectApiCallInComponent,
   "no-manual-repository-import": noManualRepositoryImport,
   "require-typed-repository": requireTypedRepository,
+  "require-pinia-composition-api": requirePiniaCompositionApi,
 } as unknown as ESLint.Plugin["rules"];
