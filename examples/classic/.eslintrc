@@ -12,9 +12,9 @@
       }
     ],
     "@timedoor/nuxt/no-inline-props-definition": [
-      "warn",
+      "error",
       {
-        "propertiesLimit": 0
+        "propertiesLimit": 1
       }
     ],
     "@timedoor/nuxt/no-manual-repository-import": [

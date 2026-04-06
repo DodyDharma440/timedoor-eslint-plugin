@@ -17,7 +17,7 @@ const eslintConfig: ESLint.ConfigData = {
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:promise/recommended",
-    "plugin:sonarjs/recommended",
+    "plugin:sonarjs/recommended-legacy",
     "plugin:@typescript-eslint/recommended",
     "plugin:vue/recommended",
     "plugin:case-police/recommended",
