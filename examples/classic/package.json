@@ -16,8 +16,8 @@
   },
   "packageManager": "pnpm@10.0.0",
   "devDependencies": {
-    "@timedoor/eslint-config-nuxt": "link:../../packages/eslint-config-nuxt",
-    "@timedoor/eslint-plugin-nuxt": "link:../../packages/eslint-plugin-nuxt",
+    "eslint-config-tmdr-nuxt": "link:../../packages/eslint-config-nuxt",
+    "eslint-plugin-tmdr-nuxt": "link:../../packages/eslint-plugin-nuxt",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.56.0",
     "eslint": "8",

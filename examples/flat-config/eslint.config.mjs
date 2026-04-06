@@ -1,19 +1,16 @@
 // @ts-check
 import withNuxt from "./.nuxt/eslint.config.mjs";
-import { createConfig, pluginPresets } from "@timedoor/eslint-config-nuxt/flat";
+import { createConfig, pluginPresets } from "eslint-config-tmdr-nuxt/flat";
 
 export default withNuxt([
   ...createConfig({
     rules: {
-      "@timedoor/nuxt/enforce-component-directory-structure": [
+      "tmdr-nuxt/enforce-component-directory-structure": [
         "error",
         { allowedDirs: ["dialogs"] },
       ],
-      "@timedoor/nuxt/no-inline-props-definition": [
-        "warn",
-        { propertiesLimit: 0 },
-      ],
-      "@timedoor/nuxt/no-manual-repository-import": [
+      "tmdr-nuxt/no-inline-props-definition": ["warn", { propertiesLimit: 0 }],
+      "tmdr-nuxt/no-manual-repository-import": [
         "warn",
         { forbiddenPaths: ["utils"], overrideDefaults: false },
       ],
