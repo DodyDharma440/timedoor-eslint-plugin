@@ -1,5 +1,5 @@
 {
-  "name": "@timedoor/eslint-plugin-nuxt",
+  "name": "eslint-plugin-tmdr-nuxt",
   "version": "0.0.1",
   "type": "commonjs",
   "main": "dist/index.js",

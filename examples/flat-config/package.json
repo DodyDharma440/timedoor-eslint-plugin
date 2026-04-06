@@ -16,7 +16,7 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@timedoor/eslint-config-nuxt": "link:../../packages/eslint-config-nuxt"
+    "eslint-config-tmdr-nuxt": "link:../../packages/eslint-config-nuxt"
   },
   "packageManager": "pnpm@10.0.0"
 }

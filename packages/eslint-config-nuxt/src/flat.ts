@@ -1,6 +1,6 @@
 // packages/eslint-config-nuxt/src/index.ts
 import type { Linter } from "eslint";
-import pluginTimedoor from "@timedoor/eslint-plugin-nuxt";
+import pluginTimedoor from "eslint-plugin-tmdr-nuxt";
 // @ts-expect-error: No types available for these plugins
 import pluginPromise from "eslint-plugin-promise";
 import pluginSonarJs from "eslint-plugin-sonarjs";
@@ -36,7 +36,7 @@ const createConfig = (
   // ─────────────────────────────────────────────────────
   const timedoorRules = { ...pluginTimedoor.configs.recommended.rules };
   disableRules
-    .filter((name) => name.startsWith("@timedoor/nuxt"))
+    .filter((name) => name.startsWith("tmdr-nuxt"))
     .forEach((ruleName) => {
       delete timedoorRules[ruleName];
     });
@@ -52,7 +52,7 @@ const createConfig = (
   const mainConfig: Linter.Config = {
     files,
     plugins: {
-      "@timedoor/nuxt": pluginTimedoor,
+      "tmdr-nuxt": pluginTimedoor,
     },
     rules: mergedRules,
   };

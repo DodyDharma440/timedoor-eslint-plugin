@@ -1,5 +1,5 @@
 {
-  "name": "@timedoor/eslint-config-nuxt",
+  "name": "eslint-config-tmdr-nuxt",
   "version": "0.0.1",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -24,7 +24,7 @@
   "license": "MIT",
   "description": "Example ESLint config with eslint-plugin-nuxt included",
   "dependencies": {
-    "@timedoor/eslint-plugin-nuxt": "link:../eslint-plugin-nuxt",
+    "eslint-plugin-tmdr-nuxt": "link:../eslint-plugin-nuxt",
     "@typescript-eslint/eslint-plugin": "^8.56.0",
     "@typescript-eslint/parser": "^8.56.0",
     "eslint-plugin-case-police": "^2.2.0",

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build:config": "cd packages/eslint-config-test && npx tsc --build",
-    "build:plugin": "cd packages/eslint-plugin-test && npx tsc --build"
+    "build:config": "cd packages/eslint-config-nuxt && npx tsc --build",
+    "build:plugin": "cd packages/eslint-plugin-nuxt && npx tsc --build"
   },
   "keywords": [],
   "author": "",

@@ -3,7 +3,7 @@ import { standardRules } from "./rules/standard";
 
 const eslintConfig: ESLint.ConfigData = {
   plugins: [
-    "@timedoor/nuxt",
+    "tmdr-nuxt",
     "vue",
     "@typescript-eslint",
     "regexp",
@@ -13,7 +13,7 @@ const eslintConfig: ESLint.ConfigData = {
     "case-police",
   ],
   extends: [
-    "plugin:@timedoor/nuxt/recommended",
+    "plugin:tmdr-nuxt/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:promise/recommended",
