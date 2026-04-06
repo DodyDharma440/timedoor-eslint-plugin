@@ -1,42 +1,30 @@
 {
-  "extends": "@timedoor/nuxt",
-  "plugins": ["vue"],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": false
-    }
-  },
+  "extends": [
+    "@timedoor/eslint-config-nuxt"
+  ],
   "rules": {
     "@timedoor/nuxt/enforce-component-directory-structure": [
       "error",
-      { "allowedDirs": ["dialogs"] }
+      {
+        "allowedDirs": [
+          "dialogs"
+        ]
+      }
     ],
     "@timedoor/nuxt/no-inline-props-definition": [
-      "warn",
-      { "propertiesLimit": 0 }
+      "error",
+      {
+        "propertiesLimit": 1
+      }
     ],
     "@timedoor/nuxt/no-manual-repository-import": [
       "warn",
-      { "forbiddenPaths": ["utils"], "overrideDefaults": false }
+      {
+        "forbiddenPaths": [
+          "utils"
+        ],
+        "overrideDefaults": false
+      }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["**/*.vue"],
-      "parser": "vue-eslint-parser",
-      "parserOptions": {
-        "parser": "@typescript-eslint/parser",
-        "ecmaVersion": 2020,
-        "sourceType": "module"
-      }
-    },
-    {
-      "files": ["**/*.ts"],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "ecmaVersion": 2020,
-        "sourceType": "module"
-      }
-    }
-  ]
+  }
 }

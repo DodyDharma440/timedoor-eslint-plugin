@@ -4,11 +4,19 @@ interface AppProps {
 }
 
 interface AppEmits {
-  submit: (value: string) => void;
+  (e: "submit"): void;
 }
 
 defineProps<AppProps>();
 defineEmits<AppEmits>();
+
+const someFunc = (n1: number, n2: number) => {
+  const result = n1 + n2;
+
+  return result;
+};
+
+useAsyncData("data", () => $fetch("/api/data"));
 </script>
 
 <template>
