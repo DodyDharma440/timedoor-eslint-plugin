@@ -31,6 +31,7 @@ const plugin: Plugin = {
         "tmdr-nuxt/no-direct-api-call-in-component": "error",
         "tmdr-nuxt/no-manual-repository-import": "error",
         "tmdr-nuxt/require-typed-repository": "error",
+        "tmdr-nuxt/require-pinia-composition-api": "error",
       },
     },
   },
