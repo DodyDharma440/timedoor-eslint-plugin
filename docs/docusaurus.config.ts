@@ -78,15 +78,15 @@ const config: Config = {
           items: [
             {
               label: "Introduction",
-              to: "/docs/intro",
+              to: "/",
             },
             {
               label: "ESLint Config",
-              to: "/docs/eslint-config",
+              to: "/eslint-config",
             },
             {
               label: "Rules",
-              to: "/docs/rules",
+              to: "/rules",
             },
           ],
         },
