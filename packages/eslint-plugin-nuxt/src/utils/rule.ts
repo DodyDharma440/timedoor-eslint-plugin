@@ -25,8 +25,7 @@ export const withTemplateVisitor = <
 };
 
 export const createRule = ESLintUtils.RuleCreator(
-  (name) =>
-    `https://timedoor-eslint-plugin-nuxt.vercel.app/docs/eslint-rules/${name}`,
+  (name) => `https://timedoor-eslint-plugin-nuxt.vercel.app/rules/${name}`,
 );
 
 type MergeOption = {
