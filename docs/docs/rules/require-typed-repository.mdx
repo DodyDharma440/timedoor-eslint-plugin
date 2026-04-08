@@ -1,0 +1,89 @@
+---
+sidebar_position: 14
+---
+
+# require-typed-repository
+
+**Category:** TypeScript · **Type:** `problem` · **Fixable:** No
+
+Enforce that all methods and property functions in repository files have typed parameters and typed return types. `any` and bare untyped returns are disallowed.
+
+## Why?
+
+Repository files are the data layer of your Nuxt application. Without explicit types on method parameters and return values, TypeScript loses its ability to catch mismatches between what the API returns and what the rest of the app expects. Every repository method should return a typed `Promise<T>` so that callers have a reliable contract.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/require-typed-repository': ['error', {
+  targetDirectory: ['**/repository/modules/**', '**/repositories/modules/**'],
+}]
+
+// .eslintrc
+"tmdr-nuxt/require-typed-repository": ["error", {
+  "targetDirectory": ["**/repository/modules/**"]
+}]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `targetDirectory` | `string[]` | `['**/repository/modules/**', '**/repositories/modules/**']` | Glob patterns of files where this rule is enforced |
+
+## Examples
+
+### ❌ Bad
+
+```ts
+// repository/modules/user.repository.ts
+class UserRepository {
+  // ❌ Missing return type annotation
+  async getUser(id: string) {
+    return api.get(`/users/${id}`)
+  }
+
+  // ❌ Parameter has no type annotation
+  async deleteUser(id) {
+    return api.delete(`/users/${id}`)
+  }
+
+  // ❌ Return type uses 'any'
+  async listUsers(): Promise<any> {
+    return api.get('/users')
+  }
+}
+```
+
+### ✅ Good
+
+```ts
+// repository/modules/user.repository.ts
+class UserRepository {
+  // ✅ Typed parameter and Generic Promise return
+  async getUser(id: string): Promise<ApiResponse<User>> {
+    return api.get<User>(`/users/${id}`)
+  }
+
+  // ✅ Multiple typed parameters
+  async searchProducts(
+    query: string,
+    page: number
+  ): Promise<ApiResponse<Product[]>> {
+    return api.get<Product[]>(`/products?query=${query}&page=${page}`)
+  }
+
+  // ✅ Typed return with PaginationResponse
+  async listOrders(
+    filter: OrderFilter
+  ): Promise<PaginationResponse<Order>> {
+    return api.get<PaginationResponse<Order>>('/orders', { filter })
+  }
+
+  // ✅ Union/intersection type parameter
+  async login(
+    credentials: { email: string; password: string } | LoginRequest
+  ): Promise<ApiResponse<AuthToken>> {
+    return api.post<AuthToken>('/auth/login', credentials)
+  }
+}
+```

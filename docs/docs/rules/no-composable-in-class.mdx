@@ -1,0 +1,114 @@
+---
+sidebar_position: 1
+---
+
+# no-composable-in-class
+
+**Category:** Best Practices (Nuxt.js) · **Type:** `problem` · **Fixable:** No
+
+Disallow Nuxt composables inside standard class declarations.
+
+## Why?
+
+Nuxt composables (like `useRoute`, `useState`, `useNuxtApp`) are designed to run within the Vue setup context (lifecycle & reactivity). Using them inside a standard JavaScript/TypeScript class breaks that context, which can cause:
+
+- Loss of reactivity
+- SSR errors (composable called without an active Nuxt instance)
+- Unpredictable behavior at runtime
+
+Move composable calls into a `<script setup>` block or a composable function instead.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/no-composable-in-class': ['error', {
+  allowedComposables: [],   // string[] — extra composables to allow inside classes (merged with defaults)
+  overrideDefaults: false,  // boolean  — when true, replaces defaults entirely
+}]
+
+// .eslintrc
+"tmdr-nuxt/no-composable-in-class": ["error", { "allowedComposables": [], "overrideDefaults": false }]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `allowedComposables` | `string[]` | `['useCookie', 'useNuxtApp']` | Composables allowed inside classes |
+| `overrideDefaults` | `boolean` | `false` | Replace the default allowed list instead of extending it |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  class MyService {
+    navigate() {
+      // ❌ useRoute is not in the default allowed list
+      const route = useRoute()
+    }
+  }
+</script>
+```
+
+```html
+<script setup lang="ts">
+  class CounterService {
+    constructor() {
+      // ❌ useState is not allowed inside a class
+      this.count = useState('count', () => 0)
+    }
+  }
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ Composable called at top-level script — not inside any class
+  const route = useRoute()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ useCookie is in the default allowedComposables list
+  class TokenService {
+    getToken() {
+      return useCookie('token')
+    }
+  }
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Composable inside a plain function — always safe
+  function setup() {
+    const route = useRoute()
+  }
+</script>
+```
+
+#### With `allowedComposables` option
+
+```html
+<script setup lang="ts">
+  // ✅ useStore added via allowedComposables option (merged with defaults)
+  class CartService {
+    load() {
+      const store = useStore()
+      const cookie = useCookie('flag') // default is still allowed
+    }
+  }
+</script>
+```
+
+```js
+// eslint.config.mjs
+'tmdr-nuxt/no-composable-in-class': ['error', {
+  allowedComposables: ['useStore'],
+  overrideDefaults: false, // defaults (useCookie, useNuxtApp) are kept
+}]
+```

@@ -1,0 +1,107 @@
+---
+sidebar_position: 7
+---
+
+# no-inline-props-definition
+
+**Category:** TypeScript · **Type:** `suggestion` · **Fixable:** No
+
+Disallow inline props definition inside `defineProps<{...}>()` if the number of properties exceeds a configurable limit.
+
+## Why?
+
+Defining many props inline as an object type literal makes the component script harder to read and impossible to reuse across components. Extracting to a named interface or type alias improves readability, reusability, and consistency across the codebase.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/no-inline-props-definition': ['warn', {
+  propertiesLimit: 2,  // number — max inline props before requiring an interface
+}]
+
+// .eslintrc
+"tmdr-nuxt/no-inline-props-definition": ["warn", { "propertiesLimit": 2 }]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `propertiesLimit` | `number` | `2` | Maximum allowed number of inline properties |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  // ❌ More than 2 properties inline (exceeds default limit)
+  defineProps<{
+    msg: string
+    count: number
+    disabled?: boolean
+    items: string[]
+  }>()
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ Single property — within the default limit ≤2
+  defineProps<{ msg: string }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Two properties — exactly at the default limit
+  defineProps<{
+    msg: string
+    count: number
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ More than 2 props — extracted to a named interface
+  interface Props {
+    msg: string
+    count: number
+    disabled?: boolean
+    items: string[]
+  }
+  defineProps<Props>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Type alias also works
+  type ComponentProps = {
+    title: string
+    subtitle?: string
+    onClick: () => void
+  }
+  defineProps<ComponentProps>()
+</script>
+```
+
+#### With `propertiesLimit` option
+
+```html
+<script setup lang="ts">
+  // ✅ 3 properties are fine when limit is set to 3 or higher
+  defineProps<{
+    a: string
+    b: number
+    c: boolean
+  }>()
+</script>
+```
+
+```js
+// eslint.config.mjs
+'tmdr-nuxt/no-inline-props-definition': ['warn', { propertiesLimit: 3 }]
+```

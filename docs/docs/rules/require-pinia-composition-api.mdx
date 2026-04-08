@@ -1,0 +1,73 @@
+---
+sidebar_position: 5
+---
+
+# require-pinia-composition-api
+
+**Category:** Best Practices (Nuxt.js) · **Type:** `problem` · **Fixable:** No
+
+Enforce Composition API style for Pinia store definitions.
+
+## Why?
+
+Pinia supports two styles for defining stores: **Options API** (object with `state`, `actions`, `getters`) and **Composition API** (setup function). Using Composition API style:
+
+- Stays consistent with Vue 3 Composition API patterns used in components
+- Allows composing logic from other composables inside the store
+- Provides better TypeScript type inference
+
+## Config
+
+```js
+'tmdr-nuxt/require-pinia-composition-api': 'error'
+```
+
+This rule has no options.
+
+## Examples
+
+### ❌ Bad
+
+```ts
+// stores/user.ts
+import { defineStore } from 'pinia'
+
+// ❌ Options API style — second argument is an object literal
+export const useStore = defineStore('main', {
+  state: () => ({ count: 0 }),
+  actions: {
+    increment() { this.count++ }
+  }
+})
+```
+
+### ✅ Good
+
+```ts
+// stores/user.ts
+import { defineStore } from 'pinia'
+
+// ✅ Composition API style — second argument is a setup function
+export const useStore = defineStore('main', () => {
+  const count = ref(0)
+  return { count }
+})
+```
+
+```ts
+// ✅ Also valid: named function expression as second argument
+const useStore = defineStore('main', function() {
+  return {}
+})
+```
+
+```ts
+// ✅ Also valid: variable reference as second argument
+const storeDef = () => ({})
+const useStore = defineStore('main', storeDef)
+```
+
+```ts
+// ✅ Also valid: three arguments where second is a setup function
+const useStore = defineStore('main', () => ({}), { persist: true })
+```

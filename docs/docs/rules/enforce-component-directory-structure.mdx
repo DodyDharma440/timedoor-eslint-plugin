@@ -1,0 +1,106 @@
+---
+sidebar_position: 15
+---
+
+# enforce-component-directory-structure
+
+**Category:** Directory Structure · **Type:** `layout` · **Fixable:** No
+
+Validate that Vue component filenames follow the naming convention based on where they are placed in the `components/` directory structure.
+
+## Why?
+
+Consistent file naming tied to directory structure makes a large component library predictable and easier to navigate. The conventions enforced by this rule are:
+
+- Components in `components/ui/` must be prefixed with `Ui`
+- A file prefixed with `Ui` must be placed in `components/ui/`
+- Components in `components/layout/<parentDir>/` must be prefixed with the PascalCase version of `<parentDir>`
+- All `.vue` files (except in `pages/`, `layouts/`, `app.vue`, `error.vue`) must be inside `components/`
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/enforce-component-directory-structure': ['warn', {
+  allowedDirs: [],          // string[] — additional allowed subdirectory names (merged with defaults)
+  overrideDefaults: false,  // boolean  — replace defaults instead of extending
+}]
+
+// .eslintrc (from examples/classic/.eslintrc)
+"tmdr-nuxt/enforce-component-directory-structure": [
+  "error",
+  { "allowedDirs": ["dialogs"] }
+]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `allowedDirs` | `string[]` | `[]` | Extra subdirectory names allowed under `components/` |
+| `overrideDefaults` | `boolean` | `false` | When `true`, replaces the default allowed dirs (`ui`, `layout`, `section`) entirely |
+
+Default allowed directories: `ui`, `layout`, `section`.
+
+## Examples
+
+### ❌ Bad
+
+```
+// ❌ Component inside components/ui/ must start with "Ui"
+/components/ui/Button.vue
+
+// ❌ A Ui-prefixed file must be inside components/ui/
+/components/section/UiCard.vue
+
+// ❌ components/layout/ requires a parent subdirectory
+/components/layout/Header.vue
+
+// ❌ components/layout/<parentDir>/ files must be prefixed with PascalCase(parentDir)
+/components/layout/sidebar/Navigation.vue   // should be SidebarNavigation.vue
+
+// ❌ Invalid directory (not in the allowed list)
+/components/helpers/MyHelper.vue
+
+// ❌ Vue file outside of components/ entirely
+/lib/MyWidget.vue
+```
+
+### ✅ Good
+
+```
+// ✅ components/ui/ — files must start with "Ui"
+/components/ui/UiButton.vue
+/components/ui/input/UiInput.vue
+/components/ui/buttons/UiButton.vue
+/components/ui/inputs/fields/UiTextField.vue
+
+// ✅ components/layout/<parentDir>/ — files start with PascalCase(parentDir)
+/components/layout/default/DefaultLayout.vue
+/components/layout/sidebar/SidebarNavigation.vue
+/components/layout/sidebar-nav/SidebarNavLayout.vue
+
+// ✅ components/section/ — no naming convention, just valid directory
+/components/section/AnySection.vue
+/components/section/header/HeaderSection.vue
+
+// ✅ Custom dir added via allowedDirs option
+/components/dialogs/Hello.vue           // with allowedDirs: ['dialogs']
+/components/widgets/WidgetCard.vue      // with allowedDirs: ['widgets']
+```
+
+#### Flat config example (from `examples/flat-config/eslint.config.mjs`)
+
+```js
+import withNuxt from './.nuxt/eslint.config.mjs'
+import { createConfig, pluginPresets } from 'eslint-config-tmdr-nuxt/flat'
+
+export default withNuxt([
+  ...createConfig({
+    rules: {
+      'tmdr-nuxt/enforce-component-directory-structure': [
+        'error',
+        { allowedDirs: ['dialogs'] },
+      ],
+    },
+  }),
+]).prepend(pluginPresets)
+```

@@ -1,0 +1,102 @@
+---
+sidebar_position: 8
+---
+
+# no-direct-any-in-props
+
+**Category:** TypeScript · **Type:** `problem` · **Fixable:** No
+
+Disallow the `any` type (and optionally `unknown`) in component props definitions.
+
+## Why?
+
+Using `any` in props defeats the purpose of TypeScript. It disables type checking for that prop, hides type mismatches, and removes IDE auto-completion. Every prop should have a specific, intentional type.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/no-direct-any-in-props': ['error', {
+  allowUnknown: false,  // boolean — when true, 'unknown' type is allowed
+}]
+
+// .eslintrc
+"tmdr-nuxt/no-direct-any-in-props": ["error", { "allowUnknown": false }]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `allowUnknown` | `boolean` | `false` | Allow `unknown` type in props |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  // ❌ 'any' type in props
+  defineProps<{
+    msg: any
+  }>()
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ Specific type
+  defineProps<{
+    msg: string
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Primitive types
+  defineProps<{
+    count: number
+    disabled?: boolean
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Union types and literal types
+  defineProps<{
+    id: number | string
+    status: 'active' | 'inactive'
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Named interface
+  interface Props {
+    title: string
+    items: string[]
+  }
+  defineProps<Props>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Generic and utility types
+  defineProps<{
+    items: Array<string>
+    config: Record<string, string>
+    callback: (value: number) => void
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Runtime declaration (without TypeScript type argument) is skipped
+  defineProps({ msg: String })
+</script>
+```
