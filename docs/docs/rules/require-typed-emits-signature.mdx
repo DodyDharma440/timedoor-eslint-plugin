@@ -1,0 +1,115 @@
+---
+sidebar_position: 10
+---
+
+# require-typed-emits-signature
+
+**Category:** TypeScript · **Type:** `suggestion` · **Fixable:** No
+
+Require `defineEmits` to use a TypeScript type definition instead of a plain string array.
+
+## Why?
+
+Using a string array for `defineEmits` provides no type safety for event payloads. A typed `defineEmits` using a TypeScript interface or type ensures:
+
+- Event names are validated at compile time
+- Payload types are enforced when emitting
+- IDE auto-completion works for both the event name and its arguments
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/require-typed-emits-signature': ['warn', {
+  allowStringArray: false,  // boolean — when true, string array syntax is allowed
+}]
+
+// .eslintrc
+"tmdr-nuxt/require-typed-emits-signature": ["warn", { "allowStringArray": false }]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `allowStringArray` | `boolean` | `false` | Allow string array syntax like `defineEmits(['update'])` |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  // ❌ String array — no payload type safety
+  const emit = defineEmits(['click', 'save'])
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ❌ No type argument and no arguments at all
+  const emit = defineEmits()
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ Call signature style
+  const emit = defineEmits<{
+    (e: 'click'): void
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Multiple events with call signatures
+  const emit = defineEmits<{
+    (e: 'save', value: string): void
+    (e: 'cancel'): void
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Record/tuple style (Vue 3.3+)
+  const emit = defineEmits<{
+    click: []
+    save: [value: string]
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Named interface reference
+  interface Emits {
+    (e: 'submit', data: FormData): void
+  }
+  const emit = defineEmits<Emits>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Named type alias reference
+  type ComponentEmits = {
+    (e: 'open'): void
+    (e: 'close', reason: string): void
+  }
+  const emit = defineEmits<ComponentEmits>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ String array is allowed when allowStringArray: true
+  const emit = defineEmits(['click', 'save'])
+</script>
+```
+
+```js
+// eslint.config.mjs
+'tmdr-nuxt/require-typed-emits-signature': ['warn', { allowStringArray: true }]
+```

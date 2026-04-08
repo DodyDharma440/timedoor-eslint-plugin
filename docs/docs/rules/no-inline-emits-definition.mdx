@@ -1,0 +1,81 @@
+---
+sidebar_position: 11
+---
+
+# no-inline-emits-definition
+
+**Category:** TypeScript · **Type:** `suggestion` · **Fixable:** No
+
+Disallow inline emits definition inside `defineEmits<{...}>()` if the number of events exceeds a configurable limit.
+
+## Why?
+
+When a component emits many events, defining them all inline as a type literal becomes difficult to read and maintain. Extracting to a named interface or type alias improves readability and makes it possible to reuse the type in parent components.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/no-inline-emits-definition': ['warn', {
+  eventsLimit: 2,           // number  — max inline events before requiring a named type
+  allowArraySyntax: false,  // boolean — allow string array syntax ['event']
+}]
+
+// .eslintrc
+"tmdr-nuxt/no-inline-emits-definition": ["warn", { "eventsLimit": 2 }]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `eventsLimit` | `number` | `2` | Maximum allowed number of inline events |
+| `allowArraySyntax` | `boolean` | `false` | Allow string array syntax |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  // ❌ More than 2 events inline (exceeds default limit)
+  const emit = defineEmits<{
+    (e: 'click'): void
+    (e: 'submit', data: FormData): void
+    (e: 'close'): void
+  }>()
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ 2 events — within the default limit
+  const emit = defineEmits<{
+    (e: 'click'): void
+    (e: 'submit', data: FormData): void
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Extracted to a named interface when there are more events
+  interface ModalEmits {
+    (e: 'open'): void
+    (e: 'close'): void
+    (e: 'confirm'): void
+  }
+  const emit = defineEmits<ModalEmits>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Type alias also works
+  type CardEmits = {
+    (e: 'select', id: number): void
+    (e: 'dismiss'): void
+  }
+  const emit = defineEmits<CardEmits>()
+</script>
+```
