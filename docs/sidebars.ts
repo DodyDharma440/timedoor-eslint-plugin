@@ -15,7 +15,13 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 const sidebars: SidebarsConfig = {
   rulesSidebar: [
     "intro",
-    "eslint-config",
+    {
+      type: "category",
+      label: "ESLint Config",
+      collapsed: false,
+      link: { type: "doc", id: "eslint-config" },
+      items: ["eslint-config/flat-config", "eslint-config/classic-config"],
+    },
     {
       type: "category",
       label: "Rules",

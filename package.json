@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "pnpm build:plugin && pnpm build:config",
     "build:config": "cd packages/eslint-config-nuxt && npx tsc --build",
     "build:plugin": "cd packages/eslint-plugin-nuxt && npx tsc --build"
   },

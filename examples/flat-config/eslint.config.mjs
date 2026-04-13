@@ -1,6 +1,6 @@
 // @ts-check
 import withNuxt from "./.nuxt/eslint.config.mjs";
-import { createConfig, pluginPresets } from "eslint-config-tmdr-nuxt/flat";
+import { createConfig, pluginPresets } from "eslint-config-tmdr-nuxt";
 
 export default withNuxt([
   ...createConfig({
