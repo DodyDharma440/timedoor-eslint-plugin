@@ -1,30 +1,3 @@
 {
-  "extends": [
-    "eslint-config-tmdr-nuxt"
-  ],
-  "rules": {
-    "tmdr-nuxt/enforce-component-directory-structure": [
-      "error",
-      {
-        "allowedDirs": [
-          "dialogs"
-        ]
-      }
-    ],
-    "tmdr-nuxt/no-inline-props-definition": [
-      "error",
-      {
-        "propertiesLimit": 1
-      }
-    ],
-    "tmdr-nuxt/no-manual-repository-import": [
-      "warn",
-      {
-        "forbiddenPaths": [
-          "utils"
-        ],
-        "overrideDefaults": false
-      }
-    ]
-  }
+  "extends": ["eslint-config-tmdr-nuxt"]
 }

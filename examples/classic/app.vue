@@ -7,7 +7,7 @@ interface AppEmits {
   (e: "submit"): void;
 }
 
-defineProps<AppProps>();
+defineProps<{ message: string; message2: string; message3: number }>();
 defineEmits<AppEmits>();
 
 const someFunc = (n1: number, n2: number) => {
