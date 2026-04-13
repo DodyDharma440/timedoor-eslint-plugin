@@ -1,0 +1,168 @@
+---
+sidebar_label: Classic Config
+sidebar_position: 2
+---
+
+import Tabs from "@theme/Tabs"
+import TabItem from "@theme/TabItem"
+
+# Classic Config (`.eslintrc`)
+
+> ESLint v8 only (legacy) — requires `eslint-config-tmdr-nuxt` v1.x.x
+
+:::info
+The classic config does **not** include Vue parser configuration automatically. Make sure your project sets up `vue-eslint-parser` as shown below.
+:::
+
+## Installation
+
+First, install the config package at v1:
+
+<Tabs>
+  <TabItem value="npm" label="npm">
+    ```bash
+    npm install --save-dev eslint-config-tmdr-nuxt@^1.0.0
+    ```
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm" default>
+    ```bash
+    pnpm add -D eslint-config-tmdr-nuxt@^1.0.0
+    ```
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    ```bash
+    yarn add -D eslint-config-tmdr-nuxt@^1.0.0
+    ```
+  </TabItem>
+</Tabs>
+
+Then install the peer dependencies:
+
+<Tabs>
+  <TabItem value="npm" label="npm">
+    ```bash
+    npm install --save-dev \
+      eslint@8 \
+      eslint-plugin-tmdr-nuxt@^1.0.0 \
+      @typescript-eslint/eslint-plugin@^8.56.0 \
+      @typescript-eslint/parser@^8.56.0 \
+      eslint-plugin-case-police@^0.6.1 \
+      eslint-plugin-import@^2.32.0 \
+      eslint-plugin-promise@^7.2.1 \
+      eslint-plugin-regexp@^2.10.0 \
+      eslint-plugin-sonarjs@^4.0.2 \
+      eslint-plugin-vue@^9.33.0 \
+      vue-eslint-parser
+    ```
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm" default>
+    ```bash
+    pnpm add -D \
+      eslint@8 \
+      eslint-plugin-tmdr-nuxt@^1.0.0 \
+      @typescript-eslint/eslint-plugin@^8.56.0 \
+      @typescript-eslint/parser@^8.56.0 \
+      eslint-plugin-case-police@^0.6.1 \
+      eslint-plugin-import@^2.32.0 \
+      eslint-plugin-promise@^7.2.1 \
+      eslint-plugin-regexp@^2.10.0 \
+      eslint-plugin-sonarjs@^4.0.2 \
+      eslint-plugin-vue@^9.33.0 \
+      vue-eslint-parser
+    ```
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    ```bash
+    yarn add -D \
+      eslint@8 \
+      eslint-plugin-tmdr-nuxt@^1.0.0 \
+      @typescript-eslint/eslint-plugin@^8.56.0 \
+      @typescript-eslint/parser@^8.56.0 \
+      eslint-plugin-case-police@^0.6.1 \
+      eslint-plugin-import@^2.32.0 \
+      eslint-plugin-promise@^7.2.1 \
+      eslint-plugin-regexp@^2.10.0 \
+      eslint-plugin-sonarjs@^4.0.2 \
+      eslint-plugin-vue@^9.33.0 \
+      vue-eslint-parser
+    ```
+  </TabItem>
+</Tabs>
+
+## Basic usage
+
+Extend the shared config in your `.eslintrc` or `.eslintrc.json`:
+
+```json
+{
+  "extends": ["eslint-config-tmdr-nuxt"]
+}
+```
+
+## With custom rule overrides
+
+```json
+{
+  "extends": ["eslint-config-tmdr-nuxt"],
+  "rules": {
+    "tmdr-nuxt/enforce-component-directory-structure": [
+      "error",
+      { "allowedDirs": ["dialogs"] }
+    ],
+    "tmdr-nuxt/no-inline-props-definition": [
+      "error",
+      { "propertiesLimit": 1 }
+    ],
+    "tmdr-nuxt/no-manual-repository-import": [
+      "warn",
+      { "forbiddenPaths": ["utils"], "overrideDefaults": false }
+    ]
+  }
+}
+```
+
+## Full config structure
+
+What `eslint-config-tmdr-nuxt` applies internally:
+
+```json
+{
+  "plugins": [
+    "tmdr-nuxt",
+    "vue",
+    "@typescript-eslint",
+    "regexp",
+    "import",
+    "promise",
+    "sonarjs",
+    "case-police"
+  ],
+  "extends": [
+    "plugin:tmdr-nuxt/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:promise/recommended",
+    "plugin:sonarjs/recommended-legacy",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/recommended",
+    "plugin:case-police/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.vue"],
+      "parser": "vue-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+      }
+    }
+  ],
+  "ignorePatterns": [".nuxt", ".output", "dist", "node_modules"]
+}
+```

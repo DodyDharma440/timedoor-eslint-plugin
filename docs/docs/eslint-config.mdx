@@ -23,13 +23,14 @@ import TabItem from "@theme/TabItem"
 | `eslint-plugin-case-police` | Enforces proper casing for known identifiers |
 
 ## Installation
+
 <Tabs>
-  <TabItem value="npm" label="npm" default>
+  <TabItem value="npm" label="npm">
     ```bash
     npm install --save-dev eslint-config-tmdr-nuxt
     ```
   </TabItem>
-  <TabItem value="pnpm" label="pnpm">
+  <TabItem value="pnpm" label="pnpm" default>
     ```bash
     pnpm add -D eslint-config-tmdr-nuxt
     ```
@@ -43,147 +44,7 @@ import TabItem from "@theme/TabItem"
 
 ## Usage
 
-### Flat Config (`eslint.config.mjs`) — recommended
+Choose a setup guide based on your ESLint version:
 
-Use `createConfig` from `eslint-config-tmdr-nuxt/flat` together with your Nuxt-generated config. `pluginPresets` provides the additional plugin configs (sonarjs, promise, case-police, regexp).
-
-```js
-// eslint.config.mjs
-// @ts-check
-import withNuxt from './.nuxt/eslint.config.mjs'
-import { createConfig, pluginPresets } from 'eslint-config-tmdr-nuxt/flat'
-
-export default withNuxt([
-  ...createConfig(),
-]).prepend(pluginPresets)
-```
-
-#### With custom rule overrides
-
-```js
-// eslint.config.mjs
-// @ts-check
-import withNuxt from './.nuxt/eslint.config.mjs'
-import { createConfig, pluginPresets } from 'eslint-config-tmdr-nuxt/flat'
-
-export default withNuxt([
-  ...createConfig({
-    rules: {
-      'tmdr-nuxt/enforce-component-directory-structure': [
-        'error',
-        { allowedDirs: ['dialogs'] },
-      ],
-      'tmdr-nuxt/no-inline-props-definition': ['warn', { propertiesLimit: 0 }],
-      'tmdr-nuxt/no-manual-repository-import': [
-        'warn',
-        { forbiddenPaths: ['utils'], overrideDefaults: false },
-      ],
-    },
-  }),
-  {
-    rules: {
-      'no-console': 'error',
-    },
-  },
-]).prepend(pluginPresets)
-```
-
-#### `createConfig` options
-
-```ts
-createConfig({
-  rules?: Linter.RulesRecord       // Additional/override rules merged on top of the preset
-  files?: string[]                 // Glob patterns to apply rules to (default: ['**/*.ts', '**/*.vue'])
-  disableRules?: string[]          // Rule names to remove from the preset (must include 'tmdr-nuxt/' prefix)
-})
-```
-
-### Legacy Config (`.eslintrc`) — ESLint v8
-
-:::info
-The legacy config does **not** include Vue parser configuration automatically. Make sure your project sets up `vue-eslint-parser` as shown below.
-:::
-
-Install peer dependencies:
-
-```bash
-pnpm add -D eslint@8 @typescript-eslint/parser @typescript-eslint/eslint-plugin \
-  eslint-plugin-vue vue-eslint-parser \
-  eslint-plugin-import eslint-plugin-promise \
-  eslint-plugin-sonarjs eslint-plugin-regexp \
-  eslint-plugin-case-police eslint-plugin-tmdr-nuxt
-```
-
-Then extend the shared config in your `.eslintrc` or `.eslintrc.json`:
-
-```json
-{
-  "extends": ["eslint-config-tmdr-nuxt"]
-}
-```
-
-#### With custom rule overrides
-
-```json
-{
-  "extends": ["eslint-config-tmdr-nuxt"],
-  "rules": {
-    "tmdr-nuxt/enforce-component-directory-structure": [
-      "error",
-      { "allowedDirs": ["dialogs"] }
-    ],
-    "tmdr-nuxt/no-inline-props-definition": [
-      "error",
-      { "propertiesLimit": 1 }
-    ],
-    "tmdr-nuxt/no-manual-repository-import": [
-      "warn",
-      { "forbiddenPaths": ["utils"], "overrideDefaults": false }
-    ]
-  }
-}
-```
-
-#### Full legacy config structure (what `eslint-config-tmdr-nuxt` applies internally)
-
-```json
-{
-  "plugins": [
-    "tmdr-nuxt",
-    "vue",
-    "@typescript-eslint",
-    "regexp",
-    "import",
-    "promise",
-    "sonarjs",
-    "case-police"
-  ],
-  "extends": [
-    "plugin:tmdr-nuxt/recommended",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
-    "plugin:promise/recommended",
-    "plugin:sonarjs/recommended-legacy",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:vue/recommended",
-    "plugin:case-police/recommended"
-  ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module"
-  },
-  "overrides": [
-    {
-      "files": ["**/*.vue"],
-      "parser": "vue-eslint-parser",
-      "parserOptions": {
-        "parser": "@typescript-eslint/parser",
-        "ecmaVersion": 2020,
-        "sourceType": "module"
-      }
-    }
-  ],
-  "ignorePatterns": [".nuxt", ".output", "dist", "node_modules"]
-}
-```
+- [**Flat Config**](./eslint-config/flat-config) — ESLint v9+ (recommended)
+- [**Classic Config**](./eslint-config/classic-config) — ESLint v8 (legacy)
