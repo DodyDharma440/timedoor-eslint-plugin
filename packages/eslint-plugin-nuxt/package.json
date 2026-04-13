@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Timedoor/eslint-plugin-nuxt.git"
+    "url": "https://github.com/DodyDharma440/timedoor-eslint-plugin.git"
   },
   "homepage": "https://timedoor-eslint-plugin-nuxt.vercel.app/",
   "files": [
@@ -19,7 +19,13 @@
     "build": "npx tsc --build",
     "test": "vitest"
   },
-  "keywords": [],
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "nuxt",
+    "vue",
+    "typescript"
+  ],
   "author": "Dodi Aditya",
   "license": "MIT",
   "description": "ESLint plugin for Timedoor Frontend Team",
