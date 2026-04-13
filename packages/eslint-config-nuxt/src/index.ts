@@ -1,70 +1,64 @@
-// packages/eslint-config-nuxt/src/index.ts
-import type { Linter } from "eslint";
-import pluginTimedoor from "eslint-plugin-tmdr-nuxt";
-// @ts-expect-error: No types available for these plugins
-import pluginPromise from "eslint-plugin-promise";
-import pluginSonarJs from "eslint-plugin-sonarjs";
-import pluginCasePolice from "eslint-plugin-case-police";
-import pluginRegexp from "eslint-plugin-regexp";
+import { ESLint } from "eslint";
 import { standardRules } from "./rules/standard";
 
-type PluginPreset = "recommended" | "trial";
-
-interface TimedoorNuxtConfigOptions {
-  rules?: Linter.RulesRecord;
-  files?: string[];
-  disableRules?: string[];
-  env?: { mode?: "development" | "production" };
-  preset?: PluginPreset;
-}
-
-const pluginPresets = [
-  pluginPromise.configs["flat/recommended"],
-  pluginSonarJs.configs?.recommended,
-  ...pluginCasePolice.configs.recommended,
-  pluginRegexp.configs["flat/recommended"],
-].filter(Boolean) as Linter.Config[];
-
-const createConfig = (
-  options: TimedoorNuxtConfigOptions = {},
-): Linter.Config[] => {
-  const {
-    rules: userRules = {},
-    files = ["**/*.ts", "**/*.vue"],
-    disableRules = [],
-  } = options;
-
-  // ─────────────────────────────────────────────────────
-  // LAYER 1: Timedoor plugin rules
-  // ─────────────────────────────────────────────────────
-  const timedoorRules = {
-    ...pluginTimedoor.configs[options.preset ?? "recommended"].rules,
-  };
-  disableRules
-    .filter((name) => name.startsWith("tmdr-nuxt"))
-    .forEach((ruleName) => {
-      delete timedoorRules[ruleName];
-    });
-
-  // ─────────────────────────────────────────────────────
-  // MERGE RULES
-  // ─────────────────────────────────────────────────────
-  const mergedRules = { ...timedoorRules, ...standardRules, ...userRules };
-
-  // ─────────────────────────────────────────────────────
-  // MAIN CONFIG — Plugins ALWAYS registered here ✅
-  // ─────────────────────────────────────────────────────
-  const mainConfig: Linter.Config = {
-    files,
-    plugins: {
-      "tmdr-nuxt": pluginTimedoor,
+const eslintConfig: ESLint.ConfigData = {
+  plugins: [
+    "tmdr-nuxt",
+    "vue",
+    "@typescript-eslint",
+    "regexp",
+    "import",
+    "promise",
+    "sonarjs",
+    "case-police",
+  ],
+  extends: [
+    "plugin:tmdr-nuxt/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:promise/recommended",
+    "plugin:sonarjs/recommended-legacy",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/recommended",
+    "plugin:case-police/recommended",
+  ],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: false,
     },
-    rules: mergedRules,
-  };
-
-  const configs: Linter.Config[] = [mainConfig];
-
-  return configs;
+  },
+  overrides: [
+    {
+      files: ["**/*.vue"],
+      parser: "vue-eslint-parser",
+      parserOptions: {
+        parser: "@typescript-eslint/parser",
+        ecmaVersion: 2020,
+        sourceType: "module",
+      },
+    },
+    {
+      files: ["**/*.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: "module",
+      },
+    },
+  ],
+  rules: { ...standardRules },
+  ignorePatterns: [
+    ".nuxt",
+    ".output",
+    "dist",
+    "node_modules",
+    ".git",
+    "*.min.js",
+    "coverage",
+  ],
 };
 
-export { createConfig, pluginPresets };
+export = eslintConfig;
