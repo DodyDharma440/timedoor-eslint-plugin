@@ -1,11 +1,30 @@
 {
-  "extends": "@timedoor/nuxt",
-  "parser": "vue-eslint-parser",
-  "plugins": ["vue"],
-  "parserOptions": {
-    "parser": "@typescript-eslint/parser",
-    "ecmaFeatures": {
-      "jsx": false
-    }
+  "extends": [
+    "eslint-config-tmdr-nuxt"
+  ],
+  "rules": {
+    "tmdr-nuxt/enforce-component-directory-structure": [
+      "error",
+      {
+        "allowedDirs": [
+          "dialogs"
+        ]
+      }
+    ],
+    "tmdr-nuxt/no-inline-props-definition": [
+      "error",
+      {
+        "propertiesLimit": 1
+      }
+    ],
+    "tmdr-nuxt/no-manual-repository-import": [
+      "warn",
+      {
+        "forbiddenPaths": [
+          "utils"
+        ],
+        "overrideDefaults": false
+      }
+    ]
   }
 }

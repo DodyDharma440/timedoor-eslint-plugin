@@ -1,0 +1,105 @@
+---
+sidebar_position: 2
+---
+
+# async-data-top-level
+
+**Category:** Best Practices (Nuxt.js) · **Type:** `problem` · **Fixable:** No
+
+Enforce `useAsyncData` and `useFetch` to be called at the top level of `<script setup>` or inside a custom composable.
+
+## Why?
+
+Calling `useAsyncData` or `useFetch` inside conditionals, loops, lifecycle hooks, or nested functions breaks SSR hydration. Nuxt must be able to statically track these calls to correctly pair server-fetched data with client-side hydration. If the call is conditional or nested, the order of calls can differ between server and client, causing a mismatch.
+
+## Config
+
+```js
+'tmdr-nuxt/async-data-top-level': 'error'
+```
+
+This rule has no options.
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  // ❌ Inside an async function — not top-level
+  async function loadData() {
+    const { data } = await useAsyncData('posts', () => $fetch('/api/posts'))
+  }
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ❌ Inside an if block
+  if (import.meta.client) {
+    if (someCondition) {
+      const { data } = await useAsyncData('posts', () => $fetch('/api/posts'))
+    }
+  }
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ❌ Inside a for loop
+  for (const id of ids) {
+    const { data } = await useFetch(`/api/item/${id}`)
+  }
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ❌ Inside an arrow function assigned to a variable
+  const load = async () => {
+    const { data } = await useAsyncData('item', () => $fetch('/api/item'))
+  }
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ Top-level call in <script setup>
+  const { data } = await useAsyncData('posts', () => $fetch('/api/posts'))
+  const { data: user } = await useFetch('/api/user')
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Inside a named composable function (starts with 'use')
+  function usePosts() {
+    return useAsyncData('posts', () => $fetch('/api/posts'))
+  }
+  const { data } = await usePosts()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Inside a composable arrow function
+  const useUser = () => {
+    return useFetch('/api/user')
+  }
+  const { data } = await useUser()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Both composables inside a composable function
+  function useDashboard() {
+    const posts = useAsyncData('posts', () => $fetch('/api/posts'))
+    const user = useFetch('/api/user')
+    return { posts, user }
+  }
+  const { posts, user } = useDashboard()
+</script>
+```

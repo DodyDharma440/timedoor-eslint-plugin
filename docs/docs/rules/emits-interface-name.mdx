@@ -1,0 +1,120 @@
+---
+sidebar_position: 13
+---
+
+# emits-interface-name
+
+**Category:** TypeScript · **Type:** `layout` · **Fixable:** Yes (code)
+
+Enforce a naming convention for the emits interface or type alias. The name must match the component filename (PascalCase) with an `Emits` suffix.
+
+## Why?
+
+A consistent naming convention for emits types:
+
+- Makes it immediately clear which interface/type describes a component's events
+- Prevents confusion with props interfaces (which use the `Props` suffix)
+- Improves navigability across large codebases
+
+For example, `button.vue` → `ButtonEmits`, `user-profile-card.vue` → `UserProfileCardEmits`.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/emits-interface-name': ['warn', {
+  pattern: '^{{FileName}}Emits$',  // {{FileName}} is replaced with the PascalCase component filename
+}]
+
+// .eslintrc
+"tmdr-nuxt/emits-interface-name": ["warn"]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `pattern` | `string` | `^{{FileName}}Emits$` | Regex pattern. `{{FileName}}` is replaced with PascalCase filename |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ❌ Generic 'Emits' — expected 'ButtonEmits'
+  interface Emits {
+    (e: 'click'): void
+  }
+  defineEmits<Emits>()
+</script>
+```
+
+### ✅ Good
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ✅ 'ButtonEmits' matches 'button.vue'
+  interface ButtonEmits {
+    (e: 'click'): void
+    (e: 'submit', value: string): void
+  }
+  defineEmits<ButtonEmits>()
+</script>
+```
+
+```html
+<!-- user-profile-card.vue -->
+<script setup lang="ts">
+  // ✅ Kebab-case filename is converted to PascalCase: 'UserProfileCardEmits'
+  interface UserProfileCardEmits {
+    (e: 'update', id: number): void
+    (e: 'delete', id: number): void
+  }
+  defineEmits<UserProfileCardEmits>()
+</script>
+```
+
+```html
+<!-- /components/ui/input/input-field.vue -->
+<script setup lang="ts">
+  // ✅ Only the filename matters, not the full path
+  interface InputFieldEmits {
+    (e: 'update:modelValue', value: string): void
+    (e: 'blur'): void
+    (e: 'focus'): void
+  }
+  defineEmits<InputFieldEmits>()
+</script>
+```
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ✅ Runtime declaration — rule does not apply
+  defineEmits(['click', 'submit'])
+</script>
+```
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ✅ Inline type literal — rule does not apply (no interface name to check)
+  defineEmits<{
+    (e: 'click'): void
+    (e: 'update', value: string): void
+  }>()
+</script>
+```
+
+```html
+<!-- card.vue -->
+<script setup lang="ts">
+  // ✅ Type alias with the correct name
+  type CardEmits = {
+    (e: 'select', id: number): void
+    (e: 'dismiss'): void
+  }
+  defineEmits<CardEmits>()
+</script>
+```

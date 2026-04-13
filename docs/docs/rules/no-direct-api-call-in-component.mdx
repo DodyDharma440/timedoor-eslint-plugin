@@ -1,0 +1,89 @@
+---
+sidebar_position: 4
+---
+
+# no-direct-api-call-in-component
+
+**Category:** Best Practices (Nuxt.js) · **Type:** `suggestion` · **Fixable:** No
+
+Disallow direct API fetching calls (`$fetch`, `ofetch`, `fetch`) inside Vue components.
+
+## Why?
+
+Placing API call logic directly inside components creates tight coupling between the UI layer and the data-fetching layer. This:
+
+- Makes components harder to test in isolation
+- Prevents reuse of the fetching logic across multiple components
+- Violates the single-responsibility principle
+
+Note: `useFetch` is **not** forbidden by this rule — only the raw fetch functions (`$fetch`, `ofetch`, `fetch`).
+
+## Config
+
+```js
+'tmdr-nuxt/no-direct-api-call-in-component': 'warn'
+```
+
+This rule has no options.
+
+## Examples
+
+### ❌ Bad
+
+```html
+<!-- PostList.vue -->
+<script setup lang="ts">
+  // ❌ Direct $fetch inside a component
+  const data = await $fetch('/api/posts')
+</script>
+```
+
+```html
+<!-- UserCard.vue -->
+<script setup lang="ts">
+  import { ofetch } from 'ofetch'
+  // ❌ ofetch is also forbidden inside Vue components
+  const user = await ofetch('/api/user/1')
+</script>
+```
+
+### ✅ Good
+
+```html
+<!-- PostList.vue -->
+<script setup lang="ts">
+  import { usePosts } from '~/composables/usePosts'
+  // ✅ API logic abstracted into a composable
+  const { data } = usePosts()
+</script>
+```
+
+```html
+<!-- UserProfile.vue -->
+<script setup lang="ts">
+  import { useUserRepository } from '~/repositories/useUserRepository'
+  // ✅ Accessing data through a repository composable
+  const { getUser } = useUserRepository()
+  const user = getUser(1)
+</script>
+```
+
+```html
+<!-- PostList.vue -->
+<script setup lang="ts">
+  // ✅ useFetch is NOT forbidden by this rule
+  const { data: posts } = useFetch('/api/posts')
+</script>
+```
+
+```ts
+// composables/usePosts.ts
+// ✅ $fetch inside a .ts composable file is fine — rule only applies to .vue files
+export const usePosts = () => {
+  const fetchPosts = async () => {
+    const data = await $fetch('/api/posts')
+    return data
+  }
+  return { fetchPosts }
+}
+```

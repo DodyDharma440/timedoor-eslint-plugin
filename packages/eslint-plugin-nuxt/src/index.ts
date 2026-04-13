@@ -1,24 +1,22 @@
 import { ESLint, Linter } from "eslint";
 import { rules } from "./rules";
+import recommended from "./configs/recommended";
+import trial from "./configs/trial";
 
 type Plugin = Omit<ESLint.Plugin, "configs"> & {
-  configs: ESLint.Plugin["configs"] & {
-    recommended: Linter.Config;
-  };
+  configs: ESLint.Plugin["configs"] &
+    Record<"recommended" | "trial", Linter.Config>;
 };
 
 const plugin: Plugin = {
   meta: {
-    name: "@timedoor/eslint-plugin-nuxt",
-    version: "0.0.1",
+    name: "eslint-plugin-tmdr-nuxt",
+    version: "1.0.0",
   },
   rules,
   configs: {
-    recommended: {
-      rules: {
-        "@timedoor/nuxt/my-rule": "error",
-      },
-    },
+    recommended,
+    trial,
   },
 };
 

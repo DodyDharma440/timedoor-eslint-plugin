@@ -1,0 +1,86 @@
+---
+sidebar_position: 3
+---
+
+# no-async-data-outside-setup
+
+**Category:** Best Practices (Nuxt.js) · **Type:** `problem` · **Fixable:** No
+
+Disallow `useAsyncData` and `useFetch` outside of a Vue component (`<script setup>`) or a composable function.
+
+## Why?
+
+`useAsyncData` and `useFetch` require an active Nuxt instance to work. Calling them in plain utility files, service classes, or plain TypeScript modules will throw a runtime error during SSR because there is no active Nuxt context available at that point.
+
+Only call these composables inside:
+- `<script setup>` of a Vue SFC (the rule is skipped entirely for `.vue` files)
+- A function whose name starts with `use` (a composable)
+
+## Config
+
+```js
+'tmdr-nuxt/no-async-data-outside-setup': 'error'
+```
+
+This rule has no options.
+
+## Examples
+
+### ❌ Bad
+
+```ts
+// utils/data.ts
+// ❌ Plain utility file — no Nuxt context
+export async function loadPosts() {
+  const { data } = await useAsyncData('posts', () => $fetch('/api/posts'))
+  return data.value
+}
+```
+
+```ts
+// services/PostService.ts
+// ❌ Top-level call in a plain .ts file — not inside any composable
+const { data } = useFetch('/api/posts')
+```
+
+### ✅ Good
+
+```html
+<!-- components/PostList.vue -->
+<script setup lang="ts">
+  // ✅ .vue files are skipped by this rule — useAsyncData is valid here
+  function fetchData() {
+    useAsyncData('posts', () => $fetch('/api/posts'))
+  }
+</script>
+```
+
+```ts
+// composables/usePosts.ts
+// ✅ Named composable function — starts with 'use'
+export function usePosts() {
+  const { data } = useAsyncData('posts', () => $fetch('/api/posts'))
+  return { data }
+}
+```
+
+```ts
+// composables/useUser.ts
+// ✅ Arrow function composable
+export const useUser = () => {
+  const { data } = useFetch('/api/user')
+  return { data }
+}
+```
+
+```ts
+// composables/useNested.ts
+// ✅ Nested helper inside a composable is valid
+export function useNested() {
+  async function loadData() {
+    const { data } = await useAsyncData('nested', () => $fetch('/api/nested'))
+    return data
+  }
+  return { loadData }
+}
+```

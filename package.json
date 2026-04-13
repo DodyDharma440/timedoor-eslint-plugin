@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build:config": "cd packages/eslint-config-test && npx tsc --build",
-    "build:plugin": "cd packages/eslint-plugin-test && npx tsc --build"
+    "build": "pnpm build:plugin && pnpm build:config",
+    "build:config": "cd packages/eslint-config-nuxt && npx tsc --build",
+    "build:plugin": "cd packages/eslint-plugin-nuxt && npx tsc --build"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",
+    "@types/node": "^25.3.0",
     "@typescript-eslint/types": "^8.56.0",
     "typescript": "^5.9.3"
   }

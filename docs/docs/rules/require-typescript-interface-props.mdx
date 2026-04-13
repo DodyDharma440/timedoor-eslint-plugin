@@ -1,0 +1,95 @@
+---
+sidebar_position: 6
+---
+
+# require-typescript-interface-props
+
+**Category:** TypeScript · **Type:** `suggestion` · **Fixable:** No
+
+Require `defineProps` to use a TypeScript type argument in `<script setup lang="ts">` components.
+
+## Why?
+
+When using TypeScript in Vue components, props should be defined using a type argument (`defineProps<Props>()`) rather than a runtime object or array. This:
+
+- Provides full static type checking
+- Enables IDE auto-completion and documentation
+- Keeps prop definitions consistent and refactor-friendly
+
+## Config
+
+```js
+'tmdr-nuxt/require-typescript-interface-props': 'error'
+```
+
+This rule has no options.
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  // ❌ No type argument — defineProps() without <T> is not allowed
+  defineProps()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ❌ Runtime declaration object as argument
+  defineProps({ msg: String, count: Number })
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ Type argument using a named interface
+  interface Props {
+    msg: string
+  }
+  defineProps<Props>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Type alias also works
+  type ComponentProps = {
+    count: number
+    disabled?: boolean
+  }
+  defineProps<ComponentProps>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Exported interface
+  export interface ComponentProps {
+    id: number
+    label?: string
+  }
+  defineProps<ComponentProps>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Inline type literal is also valid
+  defineProps<{
+    title: string
+    subtitle?: string
+  }>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Imported type from another file
+  import type { User } from '@/types'
+  defineProps<{ user: User }>()
+</script>
+```

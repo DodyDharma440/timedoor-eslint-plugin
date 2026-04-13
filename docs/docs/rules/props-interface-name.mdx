@@ -1,0 +1,120 @@
+---
+sidebar_position: 9
+---
+
+# props-interface-name
+
+**Category:** TypeScript · **Type:** `layout` · **Fixable:** Yes (code)
+
+Enforce a naming convention for the props interface. The name must match the component filename (PascalCase) with a `Props` suffix.
+
+## Why?
+
+A consistent naming convention for props interfaces makes it easy to:
+
+- Immediately identify which interface belongs to which component
+- Navigate the codebase with confidence
+- Avoid accidental name collisions between interfaces
+
+For example, `button.vue` → `ButtonProps`, `user-profile-card.vue` → `UserProfileCardProps`.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/props-interface-name': ['warn', {
+  pattern: '^{{FileName}}Props$',  // {{FileName}} is replaced with the PascalCase component filename
+}]
+
+// .eslintrc
+"tmdr-nuxt/props-interface-name": ["warn"]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `pattern` | `string` | `^{{FileName}}Props$` | Regex pattern. `{{FileName}}` is replaced with PascalCase filename |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ❌ Generic 'Props' — expected 'ButtonProps'
+  interface Props {
+    label: string
+  }
+  defineProps<Props>()
+</script>
+```
+
+```html
+<!-- Modal.vue -->
+<script setup lang="ts">
+  // ❌ 'IProps' does not match the expected 'ModalProps'
+  interface IProps {
+    open: boolean
+  }
+  defineProps<IProps>()
+</script>
+```
+
+### ✅ Good
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ✅ 'ButtonProps' matches 'button.vue'
+  interface ButtonProps {
+    label: string
+    variant?: 'primary' | 'secondary'
+  }
+  defineProps<ButtonProps>()
+</script>
+```
+
+```html
+<!-- user-profile-card.vue -->
+<script setup lang="ts">
+  // ✅ Kebab-case filename is converted to PascalCase: 'UserProfileCardProps'
+  interface UserProfileCardProps {
+    name: string
+    avatarUrl: string
+    bio?: string
+  }
+  defineProps<UserProfileCardProps>()
+</script>
+```
+
+```html
+<!-- /components/ui/input/input-field.vue -->
+<script setup lang="ts">
+  // ✅ Only the filename matters, not the full path
+  interface InputFieldProps {
+    modelValue: string
+    placeholder?: string
+    error?: string
+  }
+  defineProps<InputFieldProps>()
+</script>
+```
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ✅ Runtime declaration (without type argument) — rule does not apply
+  defineProps({ label: String, variant: String })
+</script>
+```
+
+```html
+<!-- button.vue -->
+<script setup lang="ts">
+  // ✅ Inline type literal — rule does not apply (no interface name to check)
+  defineProps<{
+    label: string
+    disabled?: boolean
+  }>()
+</script>
+```

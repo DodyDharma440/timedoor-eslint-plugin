@@ -1,6 +1,6 @@
 {
-  "name": "@timedoor/eslint-plugin-nuxt",
-  "version": "0.0.1",
+  "name": "eslint-plugin-tmdr-nuxt",
+  "version": "1.0.0",
   "type": "commonjs",
   "main": "dist/index.js",
   "exports": {
@@ -26,7 +26,8 @@
   "dependencies": {
     "@typescript-eslint/project-service": "^8.56.0",
     "@typescript-eslint/tsconfig-utils": "^8.56.0",
-    "@typescript-eslint/utils": "^8.56.0"
+    "@typescript-eslint/utils": "^8.56.0",
+    "minimatch": "^10.2.4"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": ">=7.13.0",

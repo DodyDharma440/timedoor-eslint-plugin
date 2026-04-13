@@ -1,0 +1,98 @@
+---
+sidebar_position: 16
+---
+
+# no-manual-repository-import
+
+**Category:** Directory Structure · **Type:** `problem` · **Fixable:** No
+
+Disallow manual imports from repository modules. Repository access must go through a global Nuxt plugin or composable wrapper.
+
+## Why?
+
+Directly importing repository files into components creates tight coupling between the UI layer and the data-access implementation. It also bypasses any dependency injection or plugin-level configuration (e.g., injecting a `$fetch` instance with auth headers). Instead, repository access should be routed through a globally registered Nuxt plugin (e.g., `useNuxtApp().$api`) or a composable wrapper.
+
+## Config
+
+```js
+// eslint.config.mjs (from examples/flat-config/eslint.config.mjs)
+'tmdr-nuxt/no-manual-repository-import': [
+  'warn',
+  { forbiddenPaths: ['utils'], overrideDefaults: false },
+]
+
+// .eslintrc (from examples/classic/.eslintrc)
+"tmdr-nuxt/no-manual-repository-import": [
+  "warn",
+  { "forbiddenPaths": ["utils"], "overrideDefaults": false }
+]
+```
+
+| Option (1st arg) | Type | Default | Description |
+|---|---|---|---|
+| `forbiddenPaths` | `string[]` | `['repository/modules', 'repositories/modules', 'repository/module', 'repositories/module']` | Path segments that trigger the error when found in an import source |
+| `overrideDefaults` | `boolean` | `false` | Replace default forbidden paths instead of extending them |
+
+| Option (2nd arg) | Type | Default | Description |
+|---|---|---|---|
+| `allowedDirsToImport` | `string[]` | `['plugins']` | File directories where manual repository imports are permitted |
+| `overrideDefaults` | `boolean` | `false` | Replace default allowed dirs instead of extending them |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<!-- components/UserCard.vue -->
+<script setup>
+  // ❌ Manual import from repository/modules
+  import { userRepo } from '@/repository/modules/user'
+  import { postRepo } from '~/repositories/modules/post'
+</script>
+```
+
+```html
+<!-- components/List.vue -->
+<script setup>
+  // ❌ import contains a forbidden path segment (repository/modules)
+  import { helper } from '@/service/repository/modules/data'
+</script>
+```
+
+### ✅ Good
+
+```html
+<!-- components/UserCard.vue -->
+<script setup>
+  // ✅ Allowed imports — no forbidden path segment
+  import { helper } from '@/utils/helper'
+  import { api } from '@/services/api'
+  import { store } from '@/stores/user'
+</script>
+```
+
+```html
+<!-- components/List.vue -->
+<script setup>
+  // ✅ Importing from @/utils/functions is fine (not matching repository/modules)
+  import { repositoryHelper } from '@/utils/functions'
+</script>
+```
+
+```html
+<!-- plugins/api.ts (file is inside 'plugins/' which is allowed by default) -->
+<script setup>
+  // ✅ plugins/ is in the default allowedDirsToImport list
+  import { userRepo } from '@/repository/modules/user'
+  import { postRepo } from '~/repositories/modules/post'
+</script>
+```
+
+```html
+<!-- src/services/api-client.vue -->
+<!-- With custom allowedDirsToImport: ['services'] and overrideDefaults: true -->
+<script setup>
+  // ✅ 'services' directory is explicitly allowed
+  import { repo } from '@/repository/modules/data'
+</script>
+```

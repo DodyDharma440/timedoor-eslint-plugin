@@ -6,7 +6,11 @@ interface RuleListeners {
   script?: ESLintUtils.RuleListener;
 }
 
-export const withTemplateVisitor = <C extends RuleContext<any, []>>(
+export const withTemplateVisitor = <
+  M extends string,
+  O extends readonly unknown[],
+  C extends RuleContext<M, O>,
+>(
   context: C,
   { template, script }: RuleListeners,
 ) => {
@@ -21,6 +25,21 @@ export const withTemplateVisitor = <C extends RuleContext<any, []>>(
 };
 
 export const createRule = ESLintUtils.RuleCreator(
-  (name) =>
-    `https://timedoor-eslint-plugin-nuxt.vercel.app/docs/eslint-rules/${name}`,
+  (name) => `https://timedoor-eslint-plugin-nuxt.vercel.app/rules/${name}`,
 );
+
+type MergeOption = {
+  options: string[];
+  defaultOptions: string[];
+  overrideDefaults: boolean;
+};
+
+export const mergeOptionWithDefaults = ({
+  options,
+  defaultOptions,
+  overrideDefaults,
+}: MergeOption) => {
+  const merged = overrideDefaults ? options : [...defaultOptions, ...options];
+
+  return merged;
+};

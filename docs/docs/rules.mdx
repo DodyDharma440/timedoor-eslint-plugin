@@ -1,0 +1,46 @@
+---
+sidebar_position: 3
+---
+
+# Overview
+
+## Rule Categories
+
+| Category | Description |
+|---|---|
+| **Best Practices (Nuxt.js)** | Rules for correct composable usage, SSR safety, and Pinia patterns |
+| **TypeScript** | Rules for typed props, emits, and repository methods |
+| **Directory Structure** | Rules for enforcing Nuxt project architecture conventions |
+
+## All Rules
+
+### Best Practices (Nuxt.js)
+
+| Rule | Description | Type |
+|---|---|---|
+| [`no-composable-in-class`](./rules/no-composable-in-class) | Disallow Nuxt composables inside class declarations | problem |
+| [`async-data-top-level`](./rules/async-data-top-level) | Enforce `useAsyncData`/`useFetch` at top level of setup | problem |
+| [`no-async-data-outside-setup`](./rules/no-async-data-outside-setup) | Disallow `useAsyncData`/`useFetch` outside Vue component or composable | problem |
+| [`no-direct-api-call-in-component`](./rules/no-direct-api-call-in-component) | Disallow direct API fetching inside Vue components | suggestion |
+| [`require-pinia-composition-api`](./rules/require-pinia-composition-api) | Enforce Composition API style for Pinia stores | problem |
+
+### TypeScript
+
+| Rule | Description | Type |
+|---|---|---|
+| [`require-typescript-interface-props`](./rules/require-typescript-interface-props) | Require TypeScript interface for props definition | suggestion |
+| [`no-inline-props-definition`](./rules/no-inline-props-definition) | Disallow inline props definition if count exceeds limit | suggestion |
+| [`no-direct-any-in-props`](./rules/no-direct-any-in-props) | Disallow `any` type in props definition | problem |
+| [`props-interface-name`](./rules/props-interface-name) | Enforce naming convention for props interface | layout |
+| [`require-typed-emits-signature`](./rules/require-typed-emits-signature) | Require typed signature for `defineEmits` | suggestion |
+| [`no-inline-emits-definition`](./rules/no-inline-emits-definition) | Disallow inline emits definition if count exceeds limit | suggestion |
+| [`no-direct-any-in-emits`](./rules/no-direct-any-in-emits) | Disallow `any` type in emits definition | problem |
+| [`emits-interface-name`](./rules/emits-interface-name) | Enforce naming convention for emits interface | layout |
+| [`require-typed-repository`](./rules/require-typed-repository) | Enforce typed params and return types in repository layer | problem |
+
+### Directory Structure
+
+| Rule | Description | Type |
+|---|---|---|
+| [`enforce-component-directory-structure`](./rules/enforce-component-directory-structure) | Enforce component filename based on directory | layout |
+| [`no-manual-repository-import`](./rules/no-manual-repository-import) | Disallow manual repository imports in Vue components | problem |

@@ -1,0 +1,99 @@
+---
+sidebar_position: 12
+---
+
+# no-direct-any-in-emits
+
+**Category:** TypeScript · **Type:** `problem` · **Fixable:** No
+
+Disallow the `any` type (and optionally `unknown`) in component emits definitions.
+
+## Why?
+
+Using `any` in emit event signatures removes all type safety from the emitted payload. This means the parent component cannot rely on TypeScript to validate the data shape it receives through `v-on` handlers. Every emit event should have a specific, typed function signature.
+
+## Config
+
+```js
+// eslint.config.mjs (flat)
+'tmdr-nuxt/no-direct-any-in-emits': ['error', {
+  allowUnknown: false,  // boolean — when true, 'unknown' type is allowed
+}]
+
+// .eslintrc
+"tmdr-nuxt/no-direct-any-in-emits": ["error", { "allowUnknown": false }]
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `allowUnknown` | `boolean` | `false` | Allow `unknown` type in emits |
+
+## Examples
+
+### ❌ Bad
+
+```html
+<script setup lang="ts">
+  // ❌ 'any' in emit payload
+  defineEmits<{
+    (e: 'change', value: any): void
+  }>()
+</script>
+```
+
+### ✅ Good
+
+```html
+<script setup lang="ts">
+  // ✅ No payload — void is fine
+  interface Emits {
+    (e: 'click'): void
+  }
+  defineEmits<Emits>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Specific typed payload
+  interface Emits {
+    (e: 'update', value: string): void
+    (e: 'delete', id: number): void
+  }
+  defineEmits<Emits>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Union type payload
+  interface Emits {
+    (e: 'change', value: number | string): void
+  }
+  defineEmits<Emits>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Object payload
+  interface Emits {
+    (e: 'submit', payload: { name: string; age: number }): void
+  }
+  defineEmits<Emits>()
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ Runtime declaration — rule does not apply
+  defineEmits(['click', 'update'])
+</script>
+```
+
+```html
+<script setup lang="ts">
+  // ✅ 'unknown' when allowUnknown: true
+  defineEmits<unknown>()
+</script>
+```
