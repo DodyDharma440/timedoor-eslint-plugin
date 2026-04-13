@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Timedoor/eslint-plugin-nuxt.git"
+    "url": "https://github.com/DodyDharma440/timedoor-eslint-plugin.git"
   },
   "homepage": "https://timedoor-eslint-plugin-nuxt.vercel.app/",
   "files": [
@@ -18,10 +18,16 @@
     "prebuild": "rm -rf dist",
     "build": "npx tsc --build"
   },
-  "keywords": [],
+  "keywords": [
+    "eslint",
+    "eslint-config",
+    "nuxt",
+    "vue",
+    "typescript"
+  ],
   "author": "Dodi Aditya",
   "license": "MIT",
-  "description": "Example ESLint config with eslint-plugin-nuxt included",
+  "description": "ESLint config for Timedoor Frontend Team",
   "devDependencies": {
     "eslint": "8",
     "@typescript-eslint/eslint-plugin": "^8.56.0",
