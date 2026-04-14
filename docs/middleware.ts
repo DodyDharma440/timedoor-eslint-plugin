@@ -11,7 +11,10 @@ function middleware(req: Request) {
     const authValue = basicAuth.split(" ")[1];
     const [user, pwd] = atob(authValue).split(":");
 
-    if (user === "4dmin" && pwd === "testpwd123") {
+    if (
+      user === process.env.BASIC_AUTH_USER &&
+      pwd === process.env.BASIC_AUTH_PASSWORD
+    ) {
       return next();
     }
   }
