@@ -5,7 +5,7 @@
 ## What's included
 
 | Plugin | Purpose |
-|---|---|
+| --- | --- |
 | `eslint-plugin-tmdr-nuxt` | All Timedoor Nuxt rules (see Rules section) |
 | `@typescript-eslint` | TypeScript-aware linting |
 | `eslint-plugin-vue` | Vue SFC linting |
