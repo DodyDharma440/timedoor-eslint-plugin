@@ -26,8 +26,8 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Rules",
       collapsed: false,
+      link: { type: "doc", id: "rules" },
       items: [
-        "rules",
         {
           type: "category",
           label: "Best Practices (Nuxt.js)",
