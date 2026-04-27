@@ -50,6 +50,24 @@ ruleTester.run("no-manual-repository-import", noManualRepositoryImport, {
           </script>
         `,
     },
+    // Import type is allowed
+    {
+      filename: "components/List.vue",
+      code: `
+          <script setup>
+          import type { IData } from '@/repositories/modules/example'
+          </script>
+        `,
+    },
+    // Import individual type is allowed
+    {
+      filename: "components/List.vue",
+      code: `
+          <script setup>
+          import { type IData, type IResponse } from '@/repositories/modules/example'
+          </script>
+        `,
+    },
     // External package imports (no slash after the keyword)
     {
       filename: "components/Test.vue",
@@ -186,6 +204,16 @@ ruleTester.run("no-manual-repository-import", noManualRepositoryImport, {
       code: `
           <script setup>
           import { repo } from '~/repository/modules/helper'
+          </script>
+        `,
+      errors: [{ messageId: "issue:manual-import" }],
+    },
+    // Import mixed with types
+    {
+      filename: "components/List.vue",
+      code: `
+          <script setup>
+          import { type IData, ExampleModule } from '@/repositories/modules/example'
           </script>
         `,
       errors: [{ messageId: "issue:manual-import" }],
