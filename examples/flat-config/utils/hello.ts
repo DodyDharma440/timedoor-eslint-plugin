@@ -1,1 +1,2 @@
-import PaylaterModule from "~/repositories/modules/example";
+export const foo = "Hello World";
+export const bar = "Hello TypeScript";

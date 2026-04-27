@@ -6,6 +6,7 @@ import pluginPromise from "eslint-plugin-promise";
 import pluginSonarJs from "eslint-plugin-sonarjs";
 import pluginCasePolice from "eslint-plugin-case-police";
 import pluginRegexp from "eslint-plugin-regexp";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import { standardRules } from "./rules/standard";
 
 type PluginPreset = "recommended" | "trial";
@@ -60,6 +61,13 @@ const createConfig = (
       "tmdr-nuxt": pluginTimedoor,
     },
     rules: mergedRules,
+    settings: {
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
+          project: "./tsconfig.json",
+        }),
+      ],
+    },
   };
 
   const configs: Linter.Config[] = [mainConfig];

@@ -1,4 +1,4 @@
-import FetchFactory from "../../factory";
+import FetchFactory from "../factory";
 
 interface IList {
   query?: {
