@@ -1,7 +1,10 @@
-import FetchFactory from "../../factory";
+import { bar, foo } from "~/utils/hello";
+import FetchFactory from "../../repository/factory";
 
+const _data = foo;
+const _data2 = bar;
 interface IList {
-  query?: {
+        query?: {
     status?: string;
     "date[]"?: string[];
 
@@ -20,12 +23,13 @@ interface IDetail {
 
 interface IStore extends IDetail {
   body: {
+
     // amount: string | number
   };
 }
 
 const useSomeComposable = async () => {
-  const { data } = await useAsyncData(() => {
+const { data } = await useAsyncData(() => {
     return super.call("/api/cms/paylater", {
       method: "GET",
       query,
