@@ -53,6 +53,20 @@ export const noManualRepositoryImport = createRule({
     return withTemplateVisitor(context, {
       script: {
         ImportDeclaration(node) {
+          if (node.importKind === "type") {
+            return;
+          }
+
+          const isEveryType = node.specifiers.every(
+            (specifier) =>
+              specifier.type === "ImportSpecifier" &&
+              specifier.importKind === "type",
+          );
+
+          if (isEveryType) {
+            return;
+          }
+
           const forbiddenPaths = mergeOptionWithDefaults({
             options:
               context.options[0]?.forbiddenPaths ?? DEFAULT_FORBIDDEN_PATHS,
