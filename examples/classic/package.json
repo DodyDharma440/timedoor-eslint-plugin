@@ -21,6 +21,7 @@
     "@typescript-eslint/parser": "^8.56.0",
     "eslint": "8",
     "eslint-config-tmdr-nuxt": "link:../../packages/eslint-config-nuxt",
+    "eslint-import-resolver-typescript": "^3.10.1",
     "eslint-plugin-case-police": "^0.6.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-promise": "^7.2.1",

@@ -4,7 +4,7 @@ export const standardRules: Linter.RulesRecord = {
   "no-console": "error",
   "no-debugger": "error",
   curly: "off",
-  indent: "off",
+  indent: ["error", 2],
   semi: "off",
   "comma-dangle": ["error", "always-multiline"],
   "comma-spacing": ["error", { before: false, after: true }],

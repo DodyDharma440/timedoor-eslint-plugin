@@ -59,6 +59,14 @@ const eslintConfig: ESLint.ConfigData = {
     "*.min.js",
     "coverage",
   ],
+  settings: {
+    "import/resolver": {
+      node: true,
+      typescript: {
+        project: "./tsconfig.json",
+      },
+    },
+  },
 };
 
 export = eslintConfig;
